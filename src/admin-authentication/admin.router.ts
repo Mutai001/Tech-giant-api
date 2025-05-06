@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { registerAdmin } from './admin.controller';
-import { registerAdminSchema } from './admin.validator';
+import { registerAdminSchema } from './validator';
 
 export const adminRouter = new Hono();
 
