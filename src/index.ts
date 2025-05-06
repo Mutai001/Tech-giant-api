@@ -7,6 +7,7 @@ import { serve } from "@hono/node-server";
 
 // Import routers
 import { adminRouter } from './admin-authentication/admin.router';
+import { categoryRouter } from './categories/categories.router';
 
 const app = new Hono();
 
@@ -32,6 +33,7 @@ app.get("/", (c) => c.json({ message: "Server is running" }, 200));
 
 // API Routes
 app.route("/api/admin", adminRouter); // Admin authentication routes  
+app.route("/api/categories", categoryRouter); // Category routes
 
 
 // Global error handler
