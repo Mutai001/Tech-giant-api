@@ -1,19 +1,19 @@
 ### ✅ Get all categories
 GET http://localhost:8000/api/categories
-Authorization: Bearer YOUR_JWT_TOKEN
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwicm9sZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsImlzcyI6InlvdXItYXBwLW5hbWUiLCJpYXQiOjE3NDY1MjI1NTIsImV4cCI6MTc0NjUzMzM1Mn0.s4ZBMNdb74eqrmKkweSUSYulMdHSKkG0hBXDSN4MRuA
 
 ### ✅ Get limited categories
 GET http://localhost:8000/api/categories?limit=3
-Authorization: Bearer YOUR_JWT_TOKEN
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc0NjUzMTgxMn0.WJJUi9aeB3yu8xMPP0VYmnxKBZAyIzmxldaEp41wKZk
 
 ### ✅ Get a single category
 GET http://localhost:8000/api/categories/1
-Authorization: Bearer YOUR_JWT_TOKEN
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc0NjUzMTgxMn0.WJJUi9aeB3yu8xMPP0VYmnxKBZAyIzmxldaEp41wKZk
 
 ### ✅ Create a new category
 POST http://localhost:8000/api/categories
 Content-Type: application/json
-Authorization: Bearer YOUR_JWT_TOKEN
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwicm9sZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsImlzcyI6InlvdXItYXBwLW5hbWUiLCJpYXQiOjE3NDY1MjM2MDQsImV4cCI6MTc0NjUzNDQwNH0.9UaRKz1eu2PT0zx7kStDd8V2okvasjh2YpSfkg9HsJM
 
 {
   "name": "Electronics",
@@ -23,7 +23,7 @@ Authorization: Bearer YOUR_JWT_TOKEN
 ### ✅ Update a category
 PUT http://localhost:8000/api/categories/1
 Content-Type: application/json
-Authorization: Bearer YOUR_JWT_TOKEN
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc0NjUzMTgxMn0.WJJUi9aeB3yu8xMPP0VYmnxKBZAyIzmxldaEp41wKZk
 
 {
   "description": "Electronic devices and accessories"
@@ -31,4 +31,4 @@ Authorization: Bearer YOUR_JWT_TOKEN
 
 ### ✅ Delete a category
 DELETE http://localhost:8000/api/categories/1
-Authorization: Bearer YOUR_JWT_TOKEN
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc0NjUzMTgxMn0.WJJUi9aeB3yu8xMPP0VYmnxKBZAyIzmxldaEp41wKZk

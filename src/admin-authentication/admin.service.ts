@@ -70,12 +70,17 @@ export const loginAdminService = async (credentials: {
             throw new Error("JWT_SECRET is not configured");
         }
 
+        // Updated JWT payload structure
         const payload = {
-            sub: admin.adminId,
+            sub: admin.adminId.toString(),  // Convert to string as recommended by JWT standards
             role: 'admin',
-            exp: Math.floor(Date.now() / 1000) + (60 * 60 * 3) // 3 hours
+            email: admin.email,            // Include email for additional verification
+            iss: 'your-app-name',          // Issuer identifier
+            iat: Math.floor(Date.now() / 1000), // Issued at time
+            exp: Math.floor(Date.now() / 1000) + (60 * 60 * 3) // 3 hours expiration
         };
 
+        // Generate token with the enhanced payload
         const token = await sign(payload, process.env.JWT_SECRET);
 
         return { 
@@ -84,11 +89,17 @@ export const loginAdminService = async (credentials: {
             admin: {
                 id: admin.adminId,
                 email: admin.email,
-                fullName: admin.fullName
+                fullName: admin.fullName,
+                // Include token expiration info in the response
+                tokenExpires: payload.exp 
             }
         };
     } catch (error) {
         console.error("Login error:", error);
-        return { success: false, message: "Login failed" };
+        return { 
+            success: false, 
+            message: "Login failed",
+            error: error instanceof Error ? error.message : 'Unknown error'
+        };
     }
 };

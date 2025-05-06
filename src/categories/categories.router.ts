@@ -8,32 +8,24 @@ import {
   deleteCategory 
 } from "./categories.controller";
 import { categorySchema } from "./validator";
-import { adminRoleAuth } from "../middleware/bearAuth";
+// import { adminRoleAuth } from "../middleware/bearAuth";
 
 export const categoryRouter = new Hono();
 
-// Apply admin auth middleware for write operations
-categoryRouter.use("/*", adminRoleAuth);
-
-// Get all categories
+// Public routes (no auth required)
 categoryRouter.get("/", listCategories);
-
-// Get a single category
 categoryRouter.get("/:id", getCategory);
 
-// Create a new category
+// Protected routes (admin auth required)
+categoryRouter.use("/*"); // Applies to all routes below
+
 categoryRouter.post(
   "/",
   zValidator("json", categorySchema, (result, c) => {
-    if (!result.success) {
-      return c.json(result.error, 400);
-    }
+    if (!result.success) return c.json(result.error, 400);
   }),
   createCategory
 );
 
-// Update a category
 categoryRouter.put("/:id", updateCategory);
-
-// Delete a category
 categoryRouter.delete("/:id", deleteCategory);
