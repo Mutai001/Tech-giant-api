@@ -7,6 +7,7 @@ import {
   deleteCategoryService 
 } from "./categories.service";
 
+//LIst all categories or a limited number of categories
 export const listCategories = async (c: Context) => {
   try {
     const limit = Number(c.req.query("limit"));
@@ -20,6 +21,7 @@ export const listCategories = async (c: Context) => {
   }
 };
 
+// Get a single category by ID
 export const getCategory = async (c: Context) => {
   const id = parseInt(c.req.param("id"));
   if (isNaN(id)) return c.text("Invalid ID", 400);
@@ -31,6 +33,7 @@ export const getCategory = async (c: Context) => {
   return c.json(category, 200);
 };
 
+// Create a new category
 export const createCategory = async (c: Context) => {
   try {
     const category = await c.req.json();
@@ -43,6 +46,7 @@ export const createCategory = async (c: Context) => {
   }
 };
 
+// Update an existing category by ID
 export const updateCategory = async (c: Context) => {
   const id = parseInt(c.req.param("id"));
   if (isNaN(id)) return c.text("Invalid ID", 400);
@@ -61,6 +65,7 @@ export const updateCategory = async (c: Context) => {
   }
 };
 
+// Delete a category by ID
 export const deleteCategory = async (c: Context) => {
   const id = Number(c.req.param("id"));
   if (isNaN(id)) return c.text("Invalid ID", 400);
