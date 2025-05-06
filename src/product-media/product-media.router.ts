@@ -8,7 +8,7 @@ import {
   deleteMedia
 } from "./product-media.controller";
 import { productMediaSchema, updateProductMediaSchema } from "./product-media.validator";
-import { adminRoleAuth } from "../middleware/bearAuth";
+// import { adminRoleAuth } from "../middleware/bearAuth";
 
 export const productMediaRouter = new Hono();
 
@@ -17,7 +17,9 @@ productMediaRouter.get("/product/:productId", getProductMedia);
 productMediaRouter.get("/:mediaId", getMedia);
 
 // Protected routes (admin only)
-productMediaRouter.use("/*", adminRoleAuth);
+productMediaRouter.use("/*", 
+    // adminRoleAuth
+);
 
 productMediaRouter.post(
   "/",

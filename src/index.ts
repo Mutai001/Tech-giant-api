@@ -9,7 +9,7 @@ import { serve } from "@hono/node-server";
 import { adminRouter } from './admin-authentication/admin.router';
 import { categoryRouter } from './categories/categories.router';
 import { productRouter } from './product/product.router';
-
+import { productMediaRouter } from './product-media/product-media.router';
 
 const app = new Hono();
 
@@ -37,6 +37,7 @@ app.get("/", (c) => c.json({ message: "Server is running" }, 200));
 app.route("/api/admin", adminRouter); // Admin authentication routes  
 app.route("/api/categories", categoryRouter); // Category routes
 app.route("/api/products", productRouter); // Product routes
+app.route("/api/product-media", productMediaRouter); // Product media routes
 
 
 

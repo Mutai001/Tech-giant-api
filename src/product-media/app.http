@@ -1,29 +1,32 @@
+### Health Check
+GET http://localhost:8000/
+
 ### Get all media for a product
-GET http://localhost:8000/api/media/product/1
+GET http://localhost:8000/api/product-media/product/1
 
 ### Get single media by ID
-GET http://localhost:8000/api/media/1
+GET http://localhost:8000/api/product-media/1
 
 ### Create media (admin)
-POST http://localhost:8000/api/media
-Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
+POST http://localhost:8000/api/product-media
 Content-Type: application/json
+Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
 
 {
-  "productId": 1,
+  "productId": 2,
   "mediaUrl": "https://example.com/images/product1.jpg",
   "mediaType": "image"
 }
 
 ### Update media (admin)
-PUT http://localhost:8000/api/media/1/product/1
-Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
+PUT http://localhost:8000/api/product-media/1/product/1
 Content-Type: application/json
+Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
 
 {
   "mediaUrl": "https://example.com/images/product1-updated.jpg"
 }
 
 ### Delete media (admin)
-DELETE http://localhost:8000/api/media/1/product/1
+DELETE http://localhost:8000/api/product-media/1/product/1
 Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
