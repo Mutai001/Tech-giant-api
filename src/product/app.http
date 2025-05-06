@@ -9,7 +9,7 @@ GET http://localhost:8000/api/products/1
 
 ### Create product (admin)
 POST http://localhost:8000/api/products
-Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
+Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwicm9sZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsImlzcyI6InlvdXItYXBwLW5hbWUiLCJpYXQiOjE3NDY1MjUyMDEsImV4cCI6MTc0NjUzNjAwMX0.hocJJl0R24Cn3vFv1C_E7xmq35CaqdupKpB5mSsfqXQ'
 Content-Type: application/json
 
 {

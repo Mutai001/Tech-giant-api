@@ -19,7 +19,9 @@ productRouter.get("/", getProducts);
 productRouter.get("/:id", getProduct);
 
 // Protected routes
-productRouter.use("/*", adminRoleAuth);
+productRouter.use("/*", 
+    adminRoleAuth
+);
 
 productRouter.post(
   "/",
