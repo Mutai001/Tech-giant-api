@@ -1,10 +1,9 @@
 import { eq, and } from "drizzle-orm";
 import db from "../drizzle/db";
 import { products, Product, NewProduct, productMedia } from "../drizzle/schema";
-import { adminRoleAuth } from "../middleware/bearAuth";
 
 export const getProductsService = async (limit?: number, categoryId?: number) => {
-  const query = db.query.products.findMany({
+  return await db.query.products.findMany({
     limit: limit,
     where: categoryId ? eq(products.categoryId, categoryId) : undefined,
     with: {
@@ -18,7 +17,6 @@ export const getProductsService = async (limit?: number, categoryId?: number) =>
       }
     }
   });
-  return await query;
 };
 
 export const getProductByIdService = async (id: number) => {
@@ -32,36 +30,27 @@ export const getProductByIdService = async (id: number) => {
   });
 };
 
-export const createProductService = async (product: NewProduct, adminId: number) => {
-  const [newProduct] = await db.insert(products).values({
-    ...product,
-    createdBy: adminId
-  }).returning();
+export const createProductService = async (product: NewProduct) => {
+  const [newProduct] = await db.insert(products).values(product).returning();
   return newProduct;
 };
 
-export const updateProductService = async (id: number, product: Partial<Product>, adminId: number) => {
+export const updateProductService = async (id: number, product: Partial<Product>) => {
   const [updatedProduct] = await db.update(products)
     .set({
       ...product,
       updatedAt: new Date()
     })
-    .where(and(
-      eq(products.productId, id),
-      eq(products.createdBy, adminId)
-    ))
+    .where(eq(products.productId, id))
     .returning();
   return updatedProduct;
 };
 
-export const deleteProductService = async (id: number, adminId: number) => {
-  const deletedProduct = await db.delete(products)
-    .where(and(
-      eq(products.productId, id),
-      eq(products.createdBy, adminId)
-    ))
+export const deleteProductService = async (id: number) => {
+  const [deletedProduct] = await db.delete(products)
+    .where(eq(products.productId, id))
     .returning();
-  return deletedProduct[0];
+  return deletedProduct;
 };
 
 export const addProductMediaService = async (media: typeof productMedia.$inferInsert) => {
@@ -70,11 +59,11 @@ export const addProductMediaService = async (media: typeof productMedia.$inferIn
 };
 
 export const removeProductMediaService = async (mediaId: number, productId: number) => {
-  const deletedMedia = await db.delete(productMedia)
+  const [deletedMedia] = await db.delete(productMedia)
     .where(and(
       eq(productMedia.mediaId, mediaId),
       eq(productMedia.productId, productId)
     ))
     .returning();
-  return deletedMedia[0];
+  return deletedMedia;
 };

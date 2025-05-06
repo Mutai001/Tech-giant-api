@@ -11,7 +11,7 @@ export const productSchema = z.object({
 });
 
 export const productMediaSchema = z.object({
-  productId: z.number(),
+  productId: z.number().int().positive("Product ID must be positive"),
   mediaUrl: z.string().url("Invalid URL format"),
   mediaType: z.enum(["image", "video"]),
 });

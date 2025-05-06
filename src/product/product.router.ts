@@ -10,7 +10,7 @@ import {
   removeMedia
 } from "./product.controller";
 import { productSchema, productMediaSchema } from "./product.validator";
-import { adminRoleAuth } from "../middleware/bearAuth";
+// import { adminRoleAuth } from "../middleware/bearAuth";
 
 export const productRouter = new Hono();
 
@@ -18,10 +18,8 @@ export const productRouter = new Hono();
 productRouter.get("/", getProducts);
 productRouter.get("/:id", getProduct);
 
-// Protected routes
-productRouter.use("/*", 
-    adminRoleAuth
-);
+// Protected routes (commented out for now)
+// productRouter.use("/*", adminRoleAuth);
 
 productRouter.post(
   "/",

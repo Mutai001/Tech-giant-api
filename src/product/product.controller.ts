@@ -8,7 +8,6 @@ import {
   addProductMediaService,
   removeProductMediaService
 } from "./product.service";
-import * as bcrypt from "bcrypt";
 
 export const getProducts = async (c: Context) => {
   try {
@@ -37,8 +36,7 @@ export const getProduct = async (c: Context) => {
 export const createProduct = async (c: Context) => {
   try {
     const productData = await c.req.json();
-    const adminId = c.get('admin').adminId;
-    const product = await createProductService(productData, adminId);
+    const product = await createProductService(productData);
     return c.json(product, 201);
   } catch (error: any) {
     return c.json({ error: error?.message }, 400);
@@ -51,9 +49,8 @@ export const updateProduct = async (c: Context) => {
 
   try {
     const productData = await c.req.json();
-    const adminId = c.get('admin').adminId;
-    const product = await updateProductService(id, productData, adminId);
-    if (!product) return c.json({ error: "Product not found or unauthorized" }, 404);
+    const product = await updateProductService(id, productData);
+    if (!product) return c.json({ error: "Product not found" }, 404);
     return c.json(product, 200);
   } catch (error: any) {
     return c.json({ error: error?.message }, 400);
@@ -65,9 +62,8 @@ export const deleteProduct = async (c: Context) => {
   if (isNaN(id)) return c.json({ error: "Invalid ID" }, 400);
 
   try {
-    const adminId = c.get('admin').adminId;
-    const product = await deleteProductService(id, adminId);
-    if (!product) return c.json({ error: "Product not found or unauthorized" }, 404);
+    const product = await deleteProductService(id);
+    if (!product) return c.json({ error: "Product not found" }, 404);
     return c.json({ message: "Product deleted" }, 200);
   } catch (error: any) {
     return c.json({ error: error?.message }, 400);

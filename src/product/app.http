@@ -7,38 +7,30 @@ GET http://localhost:8000/api/products?categoryId=1
 ### Get single product
 GET http://localhost:8000/api/products/1
 
-### Create product (admin)
+### Create product
 POST http://localhost:8000/api/products
-Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwicm9sZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsImlzcyI6InlvdXItYXBwLW5hbWUiLCJpYXQiOjE3NDY1MjUyMDEsImV4cCI6MTc0NjUzNjAwMX0.hocJJl0R24Cn3vFv1C_E7xmq35CaqdupKpB5mSsfqXQ'
 Content-Type: application/json
 
 {
   "name": "Premium Headphones",
-  "categoryId": 1,
+  "categoryId": 2,
   "price": 199.99,
-  "discountPrice": 179.99,
-  "stockLeft": 50,
-  "badge": "Bestseller",
-  "description": "High-quality wireless headphones with noise cancellation"
+  "stockLeft": 50
 }
 
-### Update product (admin)
-PUT http://localhost:8000/api/products/1
-Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
+### Update product
+PUT http://localhost:8000/api/products/3
 Content-Type: application/json
 
 {
-  "price": 189.99,
-  "stockLeft": 45
+  "price": 189.99
 }
 
-### Delete product (admin)
+### Delete product
 DELETE http://localhost:8000/api/products/1
-Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
 
-### Add product media (admin)
+### Add product media
 POST http://localhost:8000/api/products/media
-Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
 Content-Type: application/json
 
 {
@@ -47,6 +39,5 @@ Content-Type: application/json
   "mediaType": "image"
 }
 
-### Remove product media (admin)
+### Remove product media
 DELETE http://localhost:8000/api/products/media/1/product/1
-Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
