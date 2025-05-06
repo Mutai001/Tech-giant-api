@@ -1,1 +1,0 @@
-ALTER TABLE "therapists" ADD COLUMN "availability" boolean DEFAULT true;
