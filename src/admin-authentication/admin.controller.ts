@@ -37,6 +37,9 @@ export const loginAdmin = async (c: Context) => {
 
     } catch (error: any) {
         console.error("Admin login error:", error);
-        return c.json({ error: error?.message || "Admin login failed" }, 500);
+        return c.json({ 
+            error: error?.message || "Admin login failed",
+            details: error instanceof Error ? error.message : 'Unknown error'
+        }, 500);
     }
 };

@@ -8,24 +8,20 @@ export const createAdminService = async (adminData: {
     fullName: string;
     email: string;
     password: string;
-}): Promise<{ success: boolean; message: string; admin?: any }> => {
+}) => {
     try {
-        // Check if admin already exists
-        const existingAdmin = await db.select()
+        const [existingAdmin] = await db.select()
             .from(admins)
             .where(eq(admins.email, adminData.email));
 
-        if (existingAdmin.length > 0) {
+        if (existingAdmin) {
             return { 
                 success: false, 
                 message: "Admin with this email already exists" 
             };
         }
 
-        // Hash the password
         const hashedPassword = await bcrypt.hash(adminData.password, 10);
-
-        // Insert new admin
         const [newAdmin] = await db.insert(admins).values({
             fullName: adminData.fullName,
             email: adminData.email,
@@ -52,7 +48,6 @@ export const loginAdminService = async (credentials: {
     password: string;
 }) => {
     try {
-        // Find admin by email
         const [admin] = await db.select()
             .from(admins)
             .where(eq(admins.email, credentials.email));
@@ -61,7 +56,6 @@ export const loginAdminService = async (credentials: {
             return { success: false, message: "Admin not found" };
         }
 
-        // Compare passwords
         const passwordMatch = await bcrypt.compare(
             credentials.password, 
             admin.passwordHash
@@ -71,14 +65,18 @@ export const loginAdminService = async (credentials: {
             return { success: false, message: "Invalid credentials" };
         }
 
-        // Create JWT token
-        const secret = process.env.JWT_SECRET as string;
+        // Ensure JWT_SECRET is properly set in your environment
+        if (!process.env.JWT_SECRET) {
+            throw new Error("JWT_SECRET is not configured");
+        }
+
         const payload = {
             sub: admin.adminId,
             role: 'admin',
             exp: Math.floor(Date.now() / 1000) + (60 * 60 * 3) // 3 hours
         };
-        const token = await sign(payload, secret);
+
+        const token = await sign(payload, process.env.JWT_SECRET);
 
         return { 
             success: true,
