@@ -1,0 +1,52 @@
+### Get all products
+GET http://localhost:8000/api/products
+
+### Get products by category
+GET http://localhost:8000/api/products?categoryId=1
+
+### Get single product
+GET http://localhost:8000/api/products/1
+
+### Create product (admin)
+POST http://localhost:8000/api/products
+Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
+Content-Type: application/json
+
+{
+  "name": "Premium Headphones",
+  "categoryId": 1,
+  "price": 199.99,
+  "discountPrice": 179.99,
+  "stockLeft": 50,
+  "badge": "Bestseller",
+  "description": "High-quality wireless headphones with noise cancellation"
+}
+
+### Update product (admin)
+PUT http://localhost:8000/api/products/1
+Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
+Content-Type: application/json
+
+{
+  "price": 189.99,
+  "stockLeft": 45
+}
+
+### Delete product (admin)
+DELETE http://localhost:8000/api/products/1
+Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
+
+### Add product media (admin)
+POST http://localhost:8000/api/products/media
+Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "mediaUrl": "https://example.com/images/headphones.jpg",
+  "mediaType": "image"
+}
+
+### Remove product media (admin)
+DELETE http://localhost:8000/api/products/media/1/product/1
+Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
