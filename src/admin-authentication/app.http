@@ -1,277 +1,127 @@
-### Register Patient
-POST http://localhost:8000/api/auth/register
+### Admin Registration
+POST http://localhost:8000/api/admin/register
 Content-Type: application/json
 
 {
-  "full_name": "Cyrus admin",
-  "email": "cyrusadmin@gmail.com",
-  "contact_phone": "0722227154",
-  "address": "90 Kenya",
-  "role": "admin",
-  "password": "cyrus1234"
-}
-
-### Register Therapist
-POST http://localhost:8000/api/auth/register
-Content-Type: application/json
-
-{
-  "full_name": "DR Christine Therapist",
-  "email": "christinetherapist@gmail.com",
-  "contact_phone": "0789654321",
-  "address": "1950 Main St",
-  "role": "therapist",
-  "specialization": "Cognitive Behavioral Therapy",
-  "experience_years": 5,
-  "password": "cyrus1234"
-}
-
-### Register Admin
-POST http://localhost:8000/api/auth/register
-Content-Type: application/json
-
-{
-  "full_name": "System Administrator",
+  "fullName": "System Administrator",
   "email": "admin@example.com",
-  "contact_phone": "0788995544",
-  "address": "Admin Headquarters",
-  "role": "admin",
   "password": "AdminAccess2023!"
 }
 
-### Login User
-POST http://localhost:8000/api//auth/login
+### Admin Login
+POST http://localhost:8000/api/admin/login
 Content-Type: application/json
 
 {
-  "email": "kimtaicyrus@gmail.com",
-  "password": "cyrus1234"
+  "email": "admin@example.com",
+  "password": "AdminAccess2023!"
 }
 
-
-
-/// Multipls Users Registration
-###
-POST http://localhost:8000/api/auth/register
-
+### Admin Registration - Duplicate Email (Should Fail)
+POST http://localhost:8000/api/admin/register
 Content-Type: application/json
+
 {
-  "full_name": "DR Cyrus Kimutai",
-  "email": "cyrustherapist@gmail.com",
-  "contact_phone": "0789654321",
-  "address": "1950 Main St",
-  "role": "therapist",
-  "specialization": "Cognitive Behavioral Therapy",
-  "experience_years": 5,
-  "password": "cyrus1234"
+  "fullName": "Duplicate Admin",
+  "email": "admin@example.com",
+  "password": "Duplicate123!"
 }
 
-###
-
-POST http://localhost:8000/api/auth/register
-
+### Admin Login - Wrong Password (Should Fail)
+POST http://localhost:8000/api/admin/login
 Content-Type: application/json
+
 {
-  "full_name": "DR Christine therapist",
-  "email": "christinetherapist@gmail.com",
-  "contact_phone": "0712345678",
-  "address": "2000 Oak Ave",
-  "role": "therapist",
-  "specialization": "Marriage Counseling",
-  "experience_years": 7,
-  "password": "cyrus1234"
+  "email": "admin@example.com",
+  "password": "WrongPassword123"
 }
 
-###
-
-POST http://localhost:8000/api/auth/register
+### Admin Login - Non-existent Email (Should Fail)
+POST http://localhost:8000/api/admin/login
 Content-Type: application/json
 
 {
-  "full_name": "Christine Nyabwari",
-  "email": "christine@gmail.com",
-  "contact_phone": "0723456789",
-  "address": "2100 Pine Rd",
-  "role": "patient",
-  "password": "cyrus1234"
+  "email": "nonexistent@example.com",
+  "password": "SomePassword123"
 }
 
-###
-
-POST http://localhost:8000/api/auth/register
+### Admin Registration - Invalid Email (Should Fail)
+POST http://localhost:8000/api/admin/register
 Content-Type: application/json
 
 {
-  "full_name": "DR Ryah Therapist",
-  "email": "ryahtherapist@gmail.com",
-  "contact_phone": "0734567890",
-  "address": "2200 Elm St",
-  "role": "therapist",
-  "specialization": "Child Psychology",
-  "experience_years": 4,
-  "password": "cyrus1234"
+  "fullName": "Invalid Admin",
+  "email": "not-an-email",
+  "password": "Short1"
+}
+
+### Admin Registration - Short Password (Should Fail)
+POST http://localhost:8000/api/admin/register
+Content-Type: application/json
+
+{
+  "fullName": "Short Password Admin",
+  "email": "shortpass@example.com",
+  "password": "123"
+}
+
+### Multiple Admin Registrations (For Testing)
+
+###
+POST http://localhost:8000/api/admin/register
+Content-Type: application/json
+
+{
+  "fullName": "Super Admin",
+  "email": "super.admin@example.com",
+  "password": "SuperSecure123!"
 }
 
 ###
-
-POST http://localhost:8000/api/auth/register
+POST http://localhost:8000/api/admin/register
 Content-Type: application/json
 
 {
-  "full_name": "Ryan User",
-  "email": "ryan@gmail.com",
-  "contact_phone": "0745678901",
-  "address": "2300 Maple Dr",
-  "role": "patient",
-  "password": "cyrus1234"
+  "fullName": "Content Admin",
+  "email": "content.admin@example.com",
+  "password": "ContentManagement456!"
 }
 
 ###
-
-POST http://localhost:8000/api/auth/register
+POST http://localhost:8000/api/admin/register
 Content-Type: application/json
 
 {
-  "full_name": "DR Faith Therapist",
-  "email": "faiththerapist@gmail.com",
-  "contact_phone": "0756789012",
-  "address": "2400 Cedar Ln",
-  "role": "therapist",
-  "specialization": "Trauma Therapy",
-  "experience_years": 6,
-  "password": "cyrus1234"
+  "fullName": "Support Admin",
+  "email": "support.admin@example.com",
+  "password": "SupportPortal789!"
+}
+
+### Logins for Multiple Admins
+
+###
+POST http://localhost:8000/api/admin/login
+Content-Type: application/json
+
+{
+  "email": "super.admin@example.com",
+  "password": "SuperSecure123!"
 }
 
 ###
-
-POST http://localhost:8000/api/register
+POST http://localhost:8000/api/admin/login
 Content-Type: application/json
 
 {
-  "full_name": "Faith User",
-  "email": "faith@gmail.com",
-  "contact_phone": "0767890123",
-  "address": "2500 Birch Blvd",
-  "role": "patient",
-  "password": "cyrus1234"
+  "email": "content.admin@example.com",
+  "password": "ContentManagement456!"
 }
 
 ###
-
-POST http://localhost:8000/api//auth/register
+POST http://localhost:8000/api/admin/login
 Content-Type: application/json
 
 {
-  "full_name": "DR Sadiq Therapist",
-  "email": "sadiqtherapist@gmail.com",
-  "contact_phone": "0778901234",
-  "address": "2600 Willow Way",
-  "role": "therapist",
-  "specialization": "Addiction Counseling",
-  "experience_years": 8,
-  "password": "cyrus1234"
-}
-
-###
-
-POST http://localhost:8000/api/register
-Content-Type: application/json
-
-{
-  "full_name": "Sadiq User",
-  "email": "sadiq@gmail.com",
-  "contact_phone": "0789012345",
-  "address": "2700 Spruce Cir",
-  "role": "patient",
-  "password": "cyrus1234"
-}
-
-###
-
-POST http://localhost:8000/api//auth/register
-Content-Type: application/json
-
-{
-  "full_name": "DR Alex Therapist",
-  "email": "alextherapist@gmail.com",
-  "contact_phone": "0790123456",
-  "address": "2800 Redwood Ave",
-  "role": "therapist",
-  "specialization": "Anxiety Disorders",
-  "experience_years": 5,
-  "password": "cyrus1234"
-}
-
-###
-
-POST http://localhost:8000/api/register
-Content-Type: application/json
-
-{
-  "full_name": "Alex User",
-  "email": "alex@gmail.com",
-  "contact_phone": "0711234567",
-  "address": "2900 Sequoia St",
-  "role": "patient",
-  "password": "cyrus1234"
-}
-
-###
-
-POST http://localhost:8000/api/auth/register
-Content-Type: application/json
-
-{
-  "full_name": "DR Mutheu Therapist",
-  "email": "taylortherapist@gmail.com",
-  "contact_phone": "0722345678",
-  "address": "3000 Magnolia Dr",
-  "role": "therapist",
-  "specialization": "Depression Treatment",
-  "experience_years": 9,
-  "password": "cyrus1234"
-}
-
-###
-
-POST http://localhost:8000/api/auth/register
-Content-Type: application/json
-
-{
-  "full_name": "Taylor User",
-  "email": "taylor@gmail.com",
-  "contact_phone": "0733456789",
-  "address": "3100 Dogwood Ln",
-  "role": "patient",
-  "password": "cyrus1234"
-}
-
-###
-
-POST http://localhost:8000/api/auth/register
-Content-Type: application/json
-
-{
-  "full_name": "DR Omusee Therapist",
-  "email": "jordantherapist@gmail.com",
-  "contact_phone": "0744567890",
-  "address": "3200 Sycamore Rd",
-  "role": "therapist",
-  "specialization": "Family Therapy",
-  "experience_years": 6,
-  "password": "cyrus1234"
-}
-
-###
-
-POST http://localhost:8000/api/register
-Content-Type: application/json
-
-{
-  "full_name": "Jordan User",
-  "email": "jordan@gmail.com",
-  "contact_phone": "0755678901",
-  "address": "3300 Aspen Way",
-  "role": "patient",
-  "password": "cyrus1234"
+  "email": "support.admin@example.com",
+  "password": "SupportPortal789!"
 }
