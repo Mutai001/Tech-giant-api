@@ -6,9 +6,7 @@ import { logger } from "hono/logger";
 import { serve } from "@hono/node-server";
 
 // Import routers
-import { userRouter } from "./users/users.router";
-import { authRouter } from "./admin-authentication/auth.router";
-
+import { adminRouter } from './admin-authentication/admin.router';
 
 const app = new Hono();
 
@@ -33,8 +31,7 @@ app.use(
 app.get("/", (c) => c.json({ message: "Server is running" }, 200));
 
 // API Routes
-app.route("/api/users", userRouter);
-app.route("/api/auth", authRouter);
+app.route("/api/admin", adminRouter); // Admin authentication routes  
 
 
 // Global error handler
