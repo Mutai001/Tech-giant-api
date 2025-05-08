@@ -1,0 +1,38 @@
+### Get items for order
+GET http://localhost:8000/api/order-items/order/5
+Authorization: Bearer token
+
+### Get items by product
+GET http://localhost:8000/api/order-items/product/10
+Authorization: Bearer token
+
+### Create new order item
+POST http://localhost:8000/api/order-items
+Content-Type: application/json
+Authorization: Bearer token
+
+{
+  "orderId": 5,
+  "productId": 10,
+  "quantity": 2,
+  "priceAtPurchase": 49.99,
+  "discountApplied": 5.00
+}
+
+### Get order item
+GET http://localhost:8000/api/order-items/3
+Authorization: Bearer token
+
+### Update order item
+PATCH http://localhost:8000/api/order-items/3
+Content-Type: application/json
+Authorization: Bearer token
+
+{
+  "quantity": 3,
+  "discountApplied": 7.50
+}
+
+### Delete order item
+DELETE http://localhost:8000/api/order-items/3
+Authorization: Bearer token
