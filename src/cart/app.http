@@ -1,0 +1,35 @@
+### Get user's cart items
+GET http://localhost:8000/api/cart/user/1
+Authorization: Bearer {{token}}
+
+### Add to cart
+POST http://localhost:8000/api/cart
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "userId": 1,
+  "productId": 5,
+  "quantity": 2
+}
+
+### Get cart item by ID
+GET http://localhost:8000/api/cart/3
+Authorization: Bearer {{token}}
+
+### Update cart item quantity
+PATCH http://localhost:8000/api/cart/3
+Content-Type: application/json
+Authorization: Bearer token
+
+{
+  "quantity": 5
+}
+
+### Remove from cart
+DELETE http://localhost:8000/api/cart/3
+Authorization: Bearer token
+
+### Clear user's cart
+DELETE http://localhost:8000/api/cart/user/1/clear
+Authorization: Bearer token
