@@ -10,7 +10,7 @@ import {
 } from "./cart.controller";
 import { cartItemSchema, cartItemUpdateSchema } from "./cart.validator";
 
-const cartRouter = new Hono();
+export const cartRouter = new Hono();
 
 // Get user's cart
 cartRouter.get("/user/:userId{[0-9]+}", getUserCart);
