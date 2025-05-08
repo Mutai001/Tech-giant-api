@@ -14,11 +14,13 @@ Authorization: Bearer token
 POST http://localhost:8000/api/payments/mpesa
 Content-Type: application/json
 Authorization: Bearer token
+
 {
-  "orderId": 5,
+  "orderId": 2,
   "userId": 1,
   "amount": 99.99,
-  "phoneNumber": "254712345678"
+  "phoneNumber": "254722227154",
+  "method": "mpesa"  // Add this line
 }
 
 ### M-Pesa callback (simulate)
