@@ -1,31 +1,33 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import { 
-  listCategories, 
-  getCategory, 
-  createCategory, 
-  updateCategory, 
-  deleteCategory 
+import {
+  listCategories,
+  getCategory,
+  updateCategory,
+  deleteCategory,
+  handleCreateCategory
 } from "./categories.controller";
-import { categorySchema } from "./validator";
-// import { adminRoleAuth } from "../middleware/bearAuth";
+import { categorySchema, categoryUpdateSchema } from "./categories.validator";
 
-export const categoryRouter = new Hono();
+const categoryRouter = new Hono();
 
-// Public routes (no auth required)
+// Public routes
 categoryRouter.get("/", listCategories);
-categoryRouter.get("/:id", getCategory);
+categoryRouter.get("/:id{[0-9]+}", getCategory);
 
-// Protected routes (admin auth required)
-categoryRouter.use("/*"); // Applies to all routes below
-
+// Protected routes (admin only)
 categoryRouter.post(
   "/",
-  zValidator("json", categorySchema, (result, c) => {
-    if (!result.success) return c.json(result.error, 400);
-  }),
-  createCategory
+  zValidator("json", categorySchema),
+  handleCreateCategory
 );
 
-categoryRouter.put("/:id", updateCategory);
-categoryRouter.delete("/:id", deleteCategory);
+categoryRouter.patch(
+  "/:id{[0-9]+}",
+  zValidator("json", categoryUpdateSchema),
+  updateCategory
+);
+
+categoryRouter.delete("/:id{[0-9]+}", deleteCategory);
+
+export default categoryRouter;
