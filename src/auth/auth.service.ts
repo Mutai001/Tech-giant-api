@@ -1,6 +1,6 @@
 import { users } from "../drizzle/schema";
 import db from "../drizzle/db";
-import { eq, and, gt } from "drizzle-orm";
+import { eq, and, gt, ne } from "drizzle-orm";
 import * as bcrypt from 'bcrypt';
 import { sign } from 'hono/jwt';
 import { generateRandomCode } from '../utils/code';

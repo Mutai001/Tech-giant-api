@@ -84,3 +84,35 @@ Content-Type: application/json
   "email": "admin@example.com",
   "code": "000000"
 }
+
+### Get all users
+GET http://localhost:8000/api/auth/users
+Authorization: Bearer YOUR_VALID_TOKEN_HERE
+
+### Get single user
+GET http://localhost:8000/api/auth/users/1
+Authorization: Bearer Bearer YOUR_VALID_TOKEN_HERE
+
+### Update user
+PATCH http://localhost:8000/api/auth/users/1
+Authorization: Bearer Bearer YOUR_VALID_TOKEN_HERE
+Content-Type: application/json
+
+{
+  "fullName": "Updated Name",
+  "email": "updated@example.com"
+}
+
+### Change password
+PATCH http://localhost:8000/api/auth/users/1/change-password
+Authorization: Bearer Bearer YOUR_VALID_TOKEN_HERE
+Content-Type: application/json
+
+{
+  "currentPassword": "OldPass123!",
+  "newPassword": "NewPass123!"
+}
+
+### Delete user
+DELETE http://localhost:8000/api/auth/users/1
+Authorization: Bearer Bearer YOUR_VALID_TOKEN_HERE

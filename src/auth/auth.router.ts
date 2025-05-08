@@ -5,14 +5,21 @@ import {
   login, 
   verify, 
   resendCode,
-  verifyLoginCode
+  verifyLoginCode,
+  getUsers,
+  changePwd,
+  deleteUser,
+  getUser,
+  update
 } from './auth.controller';
 import { 
   registerSchema, 
   loginSchema, 
   verifyEmailSchema,
   resendVerificationSchema,
-  loginVerificationSchema
+  loginVerificationSchema,
+  changePasswordSchema,
+  updateUserSchema
 } from './auth.validator';
 
 export const authRouter = new Hono();
@@ -53,3 +60,18 @@ authRouter.post('/login/verify',
   zValidator('json', loginVerificationSchema, validationErrorHandler), 
   verifyLoginCode
 );
+
+// Add to the bottom of auth.router.ts
+
+// User CRUD routes
+authRouter.get('/users', getUsers);
+authRouter.get('/users/:id', getUser);
+authRouter.patch('/users/:id', 
+  zValidator('json', updateUserSchema, validationErrorHandler),
+  update
+);
+authRouter.patch('/users/:id/change-password',
+  zValidator('json', changePasswordSchema, validationErrorHandler),
+  changePwd
+);
+authRouter.delete('/users/:id', deleteUser);

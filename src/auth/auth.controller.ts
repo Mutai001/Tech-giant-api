@@ -4,7 +4,12 @@ import {
   loginUser, 
   verifyEmail, 
   resendVerificationCode,
-  verifyLogin
+  verifyLogin,
+  changePassword,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser
 } from "./auth.service";
 import { 
   registerSchema, 
@@ -289,7 +294,7 @@ export const changePwd = async (c: Context) => {
   }
 };
 
-export const deleteUser = async (c: Context) => {
+export const removeUser = async (c: Context): Promise<Response> => {
   try {
     const userId = parseInt(c.req.param('id'));
     if (isNaN(userId)) {
