@@ -192,3 +192,125 @@ export const verifyLoginCode = async (c: Context) => {
     }, 500);
   }
 };
+
+// Add to the bottom of auth.controller.ts
+
+export const getUser = async (c: Context) => {
+  try {
+    const userId = parseInt(c.req.param('id'));
+    if (isNaN(userId)) {
+      return c.json({ error: "Invalid user ID" }, 400);
+    }
+
+    const result = await getUserById(userId);
+    
+    if (!result.success) {
+      return c.json({ error: result.message }, 404);
+    }
+
+    return c.json({ user: result.user }, 200);
+  } catch (error: any) {
+    console.error("Get user error:", error);
+    return c.json({ 
+      error: error?.message || "Failed to fetch user",
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, 500);
+  }
+};
+
+export const getUsers = async (c: Context) => {
+  try {
+    const result = await getAllUsers();
+    
+    if (!result.success) {
+      return c.json({ error: result.message }, 400);
+    }
+
+    return c.json({ users: result.users }, 200);
+  } catch (error: any) {
+    console.error("Get users error:", error);
+    return c.json({ 
+      error: error?.message || "Failed to fetch users",
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, 500);
+  }
+};
+
+export const update = async (c: Context) => {
+  try {
+    const userId = parseInt(c.req.param('id'));
+    if (isNaN(userId)) {
+      return c.json({ error: "Invalid user ID" }, 400);
+    }
+
+    const updateData = await handleJsonParseError(c);
+    const result = await updateUser(userId, updateData);
+    
+    if (!result.success) {
+      return c.json({ error: result.message }, 400);
+    }
+
+    return c.json({ 
+      message: result.message || "User updated successfully",
+      user: result.user 
+    }, 200);
+  } catch (error: any) {
+    console.error("Update user error:", error);
+    return c.json({ 
+      error: error?.message || "Failed to update user",
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, 500);
+  }
+};
+
+export const changePwd = async (c: Context) => {
+  try {
+    const userId = parseInt(c.req.param('id'));
+    if (isNaN(userId)) {
+      return c.json({ error: "Invalid user ID" }, 400);
+    }
+
+    const { currentPassword, newPassword } = await handleJsonParseError(c);
+    const result = await changePassword(userId, currentPassword, newPassword);
+    
+    if (!result.success) {
+      return c.json({ error: result.message }, 400);
+    }
+
+    return c.json({ 
+      message: result.message || "Password changed successfully"
+    }, 200);
+  } catch (error: any) {
+    console.error("Change password error:", error);
+    return c.json({ 
+      error: error?.message || "Failed to change password",
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, 500);
+  }
+};
+
+export const deleteUser = async (c: Context) => {
+  try {
+    const userId = parseInt(c.req.param('id'));
+    if (isNaN(userId)) {
+      return c.json({ error: "Invalid user ID" }, 400);
+    }
+
+    const result = await deleteUser(userId);
+    
+    if (!result.success) {
+      return c.json({ error: result.message }, 400);
+    }
+
+    return c.json({ 
+      message: result.message || "User deleted successfully",
+      user: result.user 
+    }, 200);
+  } catch (error: any) {
+    console.error("Delete user error:", error);
+    return c.json({ 
+      error: error?.message || "Failed to delete user",
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, 500);
+  }
+};
