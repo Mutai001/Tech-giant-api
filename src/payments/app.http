@@ -4,7 +4,7 @@ Content-Type: application/json
 Authorization: Bearer 
 
 {
-  "orderId": 5,
+  "orderId": 2,
   "userId": 1,
   "method": "card",
   "amount": 99.99,
@@ -17,7 +17,7 @@ Content-Type: application/json
 Authorization: Bearer 
 
 {
-  "orderId": 3,
+  "orderId": 2,
   "userId": 2,
   "amount": 1000,
   "phoneNumber": "254712345678",
