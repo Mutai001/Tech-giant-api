@@ -26,6 +26,13 @@ Content-Type: application/json
   "price": 189.99
 }
 
+### Update product on render
+https://tech-giant-api.onrender.com/api/products/3
+Content-Type: application/json
+
+{
+  "price": 189.99
+}
 ### Delete product
 DELETE http://localhost:8000/api/products/1
 
