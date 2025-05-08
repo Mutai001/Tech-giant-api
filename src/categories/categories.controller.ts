@@ -1,84 +1,98 @@
 import { Context } from "hono";
-import { 
-  categoriesService, 
-  getCategoryService, 
-  createCategoryService, 
-  updateCategoryService, 
-  deleteCategoryService 
+import {
+  getAllCategories,
+  getCategoryById,
+  createCategory,
+  updateCategory as updateCategoryService,
+  deleteCategory as deleteCategoryService,
+  checkCategoryExists
 } from "./categories.service";
+import { categorySchema, categoryUpdateSchema } from "./categories.validator";
 
-//LIst all categories or a limited number of categories
 export const listCategories = async (c: Context) => {
   try {
-    const limit = Number(c.req.query("limit"));
-    const data = await categoriesService(limit);
-    if (data == null || data.length === 0) {
-      return c.text("No categories found", 404);
+    const limitQuery = c.req.query('limit');
+    const limit = limitQuery !== undefined ? parseInt(limitQuery) : undefined;
+    if (limit && isNaN(limit)) {
+      return c.json({ error: "Invalid limit parameter" }, 400);
     }
-    return c.json(data, 200);
-  } catch (error: any) {
-    return c.json({ error: error?.message }, 400);
+
+    const categories = await getAllCategories(limit);
+    return c.json(categories, 200);
+  } catch (error) {
+    return c.json({ error: "Failed to fetch categories" }, 500);
   }
 };
 
-// Get a single category by ID
 export const getCategory = async (c: Context) => {
-  const id = parseInt(c.req.param("id"));
-  if (isNaN(id)) return c.text("Invalid ID", 400);
+  const id = parseInt(c.req.param('id'));
+  if (isNaN(id)) return c.json({ error: "Invalid category ID" }, 400);
 
-  const category = await getCategoryService(id);
-  if (category === undefined) {
-    return c.text("Category not found", 404);
-  }
-  return c.json(category, 200);
-};
-
-// Create a new category
-export const createCategory = async (c: Context) => {
   try {
-    const category = await c.req.json();
-    const createdCategory = await createCategoryService(category);
-
-    if (!createdCategory) return c.text("Category not created", 400);
-    return c.json({ msg: createdCategory }, 201);
-  } catch (error: any) {
-    return c.json({ error: error?.message }, 400);
+    const category = await getCategoryById(id);
+    if (!category) return c.json({ error: "Category not found" }, 404);
+    return c.json(category, 200);
+  } catch (error) {
+    return c.json({ error: "Failed to fetch category" }, 500);
   }
 };
 
-// Update an existing category by ID
+export const handleCreateCategory = async (c: Context) => {
+  try {
+    const data = await c.req.json();
+    const validation = categorySchema.safeParse(data);
+    if (!validation.success) {
+      return c.json({ errors: validation.error.flatten() }, 400);
+    }
+
+    const exists = await checkCategoryExists(validation.data.name);
+    if (exists) {
+      return c.json({ error: "Category name already exists" }, 409);
+    }
+
+    const category = await createCategory(validation.data);
+    return c.json(category, 201);
+  } catch (error) {
+    return c.json({ error: "Failed to create category" }, 500);
+  }
+};
+
 export const updateCategory = async (c: Context) => {
-  const id = parseInt(c.req.param("id"));
-  if (isNaN(id)) return c.text("Invalid ID", 400);
+  const id = parseInt(c.req.param('id'));
+  if (isNaN(id)) return c.json({ error: "Invalid category ID" }, 400);
 
-  const category = await c.req.json();
   try {
-    const searchedCategory = await getCategoryService(id);
-    if (searchedCategory === undefined) return c.text("Category not found", 404);
+    const data = await c.req.json();
+    const validation = categoryUpdateSchema.safeParse(data);
+    if (!validation.success) {
+      return c.json({ errors: validation.error.flatten() }, 400);
+    }
 
-    const res = await updateCategoryService(id, category);
-    if (!res) return c.text("Category not updated", 400);
+    if (data.name) {
+      const exists = await checkCategoryExists(data.name, id);
+      if (exists) {
+        return c.json({ error: "Category name already exists" }, 409);
+      }
+    }
 
-    return c.json({ msg: res }, 200);
-  } catch (error: any) {
-    return c.json({ error: error?.message }, 400);
+    const category = await updateCategoryService(id, validation.data);
+    return c.json(category, 200);
+  } catch (error) {
+    return c.json({ error: "Failed to update category" }, 500);
   }
 };
 
-// Delete a category by ID
 export const deleteCategory = async (c: Context) => {
-  const id = Number(c.req.param("id"));
-  if (isNaN(id)) return c.text("Invalid ID", 400);
+  const id = parseInt(c.req.param('id'));
+  if (isNaN(id)) return c.json({ error: "Invalid category ID" }, 400);
 
   try {
-    const category = await getCategoryService(id);
-    if (category === undefined) return c.text("Category not found", 404);
+    const category = await getCategoryById(id);
+    if (!category) return c.json({ error: "Category not found" }, 404);
 
-    const res = await deleteCategoryService(id);
-    if (!res) return c.text("Category not deleted", 400);
-
-    return c.json({ msg: res }, 200);
-  } catch (error: any) {
-    return c.json({ error: error?.message }, 400);
+    const deleted = await deleteCategoryService(id);
+    return c.json(deleted, 200);
+  } catch (error) {
+    return c.json({ error: "Failed to delete category" }, 500);
   }
 };
