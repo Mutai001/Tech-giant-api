@@ -2,10 +2,10 @@
 GET http://localhost:8000/
 
 ### Get all media for a product
-GET http://localhost:8000/api/product-media/product/3
+GET http://localhost:8000/api/product-media/product/2
 
 ### Get single media by ID
-GET http://localhost:8000/api/product-media/
+GET http://localhost:8000/api/product-media/2
 
 ### Create media (admin)
 POST http://localhost:8000/api/product-media
@@ -13,13 +13,13 @@ Content-Type: application/json
 Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
 
 {
-  "productId": 3,
+  "productId": 2,
   "mediaUrl": "https://example.com/images/product1.jpg",
   "mediaType": "image"
 }
 
 ### Update media (admin)
-PUT http://localhost:8000/api/product-media/1/product/1
+PUT http://localhost:8000/api/product-media/2/product/2
 Content-Type: application/json
 Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
 

@@ -2,7 +2,7 @@
 GET http://localhost:8000/api/products
 
 ### Get products by category
-GET http://localhost:8000/api/products?categoryId=1
+GET http://localhost:8000/api/products?categoryId=2
 
 ### Get single product
 GET http://localhost:8000/api/products/1
@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 ### Update product
-PUT http://localhost:8000/api/products/3
+PUT http://localhost:8000/api/products/
 Content-Type: application/json
 
 {
@@ -41,7 +41,7 @@ POST http://localhost:8000/api/products/media
 Content-Type: application/json
 
 {
-  "productId": 1,
+  "productId": 2,
   "mediaUrl": "https://example.com/images/headphones.jpg",
   "mediaType": "image"
 }
