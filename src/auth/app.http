@@ -1,15 +1,45 @@
-### Admin Registration
-POST http://localhost:8000/api/admin/register
+### Register Admin
+POST http://localhost:8000/api/auth/register
 Content-Type: application/json
 
 {
   "fullName": "System Administrator",
   "email": "admin@example.com",
-  "password": "AdminAccess2023!"
+  "password": "AdminAccess2023!",
+  "phone": "+254712345678",
+  "role": "admin"
 }
 
-### Admin Login
-POST http://localhost:8000/api/admin/login
+### Register User
+POST http://localhost:8000/api/auth/register
+Content-Type: application/json
+
+{
+  "fullName": "Regular User",
+  "email": "user@example.com",
+  "password": "UserPass123!",
+  "phone": "+254787654321"
+}
+
+### Verify Email
+POST http://localhost:8000/api/auth/verify
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "code": "123456" // Replace with actual code
+}
+
+### Resend Verification Code
+POST http://localhost:8000/api/auth/resend-code
+Content-Type: application/json
+
+{
+  "email": "admin@example.com"
+}
+
+### Login (will send verification code if not verified)
+POST http://localhost:8000/api/auth/login
 Content-Type: application/json
 
 {
@@ -17,18 +47,28 @@ Content-Type: application/json
   "password": "AdminAccess2023!"
 }
 
-### Admin Registration - Duplicate Email (Should Fail)
-POST http://localhost:8000/api/admin/register
+### Login with Verification Code
+POST http://localhost:8000/api/auth/login/verify
 Content-Type: application/json
 
 {
-  "fullName": "Duplicate Admin",
   "email": "admin@example.com",
-  "password": "Duplicate123!"
+  "code": "123456" // Replace with actual code
 }
 
-### Admin Login - Wrong Password (Should Fail)
-POST http://localhost:8000/api/admin/login
+### Invalid Registration - Short Password
+POST http://localhost:8000/api/auth/register
+Content-Type: application/json
+
+{
+  "fullName": "Invalid User",
+  "email": "invalid@example.com",
+  "password": "short",
+  "phone": "+254700000000"
+}
+
+### Invalid Login - Wrong Password
+POST http://localhost:8000/api/auth/login
 Content-Type: application/json
 
 {
@@ -36,92 +76,11 @@ Content-Type: application/json
   "password": "WrongPassword123"
 }
 
-### Admin Login - Non-existent Email (Should Fail)
-POST http://localhost:8000/api/admin/login
+### Invalid Verification - Wrong Code
+POST http://localhost:8000/api/auth/verify
 Content-Type: application/json
 
 {
-  "email": "nonexistent@example.com",
-  "password": "SomePassword123"
-}
-
-### Admin Registration - Invalid Email (Should Fail)
-POST http://localhost:8000/api/admin/register
-Content-Type: application/json
-
-{
-  "fullName": "Invalid Admin",
-  "email": "not-an-email",
-  "password": "Short1"
-}
-
-### Admin Registration - Short Password (Should Fail)
-POST http://localhost:8000/api/admin/register
-Content-Type: application/json
-
-{
-  "fullName": "Short Password Admin",
-  "email": "shortpass@example.com",
-  "password": "123"
-}
-
-### Multiple Admin Registrations (For Testing)
-
-###
-POST http://localhost:8000/api/admin/register
-Content-Type: application/json
-
-{
-  "fullName": "Super Admin",
-  "email": "super.admin@example.com",
-  "password": "SuperSecure123!"
-}
-
-###
-POST http://localhost:8000/api/admin/register
-Content-Type: application/json
-
-{
-  "fullName": "Content Admin",
-  "email": "content.admin@example.com",
-  "password": "ContentManagement456!"
-}
-
-###
-POST http://localhost:8000/api/admin/register
-Content-Type: application/json
-
-{
-  "fullName": "Support Admin",
-  "email": "support.admin@example.com",
-  "password": "SupportPortal789!"
-}
-
-### Logins for Multiple Admins
-
-###
-POST http://localhost:8000/api/admin/login
-Content-Type: application/json
-
-{
-  "email": "super.admin@example.com",
-  "password": "SuperSecure123!"
-}
-
-###
-POST http://localhost:8000/api/admin/login
-Content-Type: application/json
-
-{
-  "email": "content.admin@example.com",
-  "password": "ContentManagement456!"
-}
-
-###
-POST http://localhost:8000/api/admin/login
-Content-Type: application/json
-
-{
-  "email": "support.admin@example.com",
-  "password": "SupportPortal789!"
+  "email": "admin@example.com",
+  "code": "000000"
 }

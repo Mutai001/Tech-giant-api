@@ -14,6 +14,23 @@ import {
   loginVerificationSchema
 } from "./auth.validator";
 
+// Define response types for better type safety
+type AuthResponse = {
+  success: boolean;
+  message: string;
+  user?: {
+    id: number;
+    email: string;
+    fullName: string;
+    role: string;
+    tokenExpires?: number;
+    isVerified?: boolean;
+  };
+  token?: string;
+  requiresVerification?: boolean;
+  error?: string;
+};
+
 export const register = async (c: Context) => {
   try {
     const userData = await c.req.json();
@@ -40,7 +57,7 @@ export const register = async (c: Context) => {
 export const login = async (c: Context) => {
   try {
     const credentials = await c.req.json();
-    const result = await loginUser(credentials);
+    const result = await loginUser(credentials) as AuthResponse;
     
     if (!result.success) {
       if (result.requiresVerification) {
@@ -50,6 +67,10 @@ export const login = async (c: Context) => {
         }, 401);
       }
       return c.json({ error: result.message }, 401);
+    }
+
+    if (!result.token) {
+      return c.json({ error: "Authentication token not generated" }, 500);
     }
 
     return c.json({
@@ -69,7 +90,7 @@ export const login = async (c: Context) => {
 export const verify = async (c: Context) => {
   try {
     const { email, code } = await c.req.json();
-    const result = await verifyEmail(email, code);
+    const result = await verifyEmail(email, code) as AuthResponse;
     
     if (!result.success) {
       return c.json({ error: result.message }, 400);
@@ -114,10 +135,14 @@ export const resendCode = async (c: Context) => {
 export const verifyLoginCode = async (c: Context) => {
   try {
     const { email, code } = await c.req.json();
-    const result = await verifyLogin(email, code);
+    const result = await verifyLogin(email, code) as AuthResponse;
     
     if (!result.success) {
       return c.json({ error: result.message }, 401);
+    }
+
+    if (!result.token) {
+      return c.json({ error: "Authentication token not generated" }, 500);
     }
 
     return c.json({
