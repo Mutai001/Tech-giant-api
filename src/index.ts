@@ -6,7 +6,7 @@ import { logger } from "hono/logger";
 import { serve } from "@hono/node-server";
 
 // Import routers
-import { adminRouter } from './admin-authentication/admin.router';
+import { adminRouter } from './auth/admin.router';
 import { categoryRouter } from './categories/categories.router';
 import { productRouter } from './product/product.router';
 import { productMediaRouter } from './product-media/product-media.router';
