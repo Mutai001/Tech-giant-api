@@ -10,7 +10,7 @@ import {
 } from "./order-items.controller";
 import { orderItemSchema, orderItemUpdateSchema } from "./order-items.validator";
 
-const orderItemRouter = new Hono();
+export const orderItemRouter = new Hono();
 
 // Order-based routes
 orderItemRouter.get("/order/:orderId{[0-9]+}", listOrderItems);
@@ -35,4 +35,4 @@ orderItemRouter.patch(
 
 orderItemRouter.delete("/:id{[0-9]+}", deleteItem);
 
-export default orderItemRouter;
+// export default orderItemRouter;

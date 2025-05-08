@@ -12,6 +12,7 @@ import { productRouter } from './product/product.router';
 import { productMediaRouter } from './product-media/product-media.router';
 import { cartRouter } from './cart/cart.router';
 import { orderRouter } from './orders/orders.router';
+import { orderItemRouter } from './order-items/order-items.router';
 
 const app = new Hono();
 
@@ -42,6 +43,7 @@ app.route("/api/products", productRouter); // Product routes
 app.route("/api/product-media", productMediaRouter); // Product media routes
 app.route("/api/cart", cartRouter); // Cart routes
 app.route("/api/orders", orderRouter); // Order routes
+app.route("/api/order-items", orderItemRouter); // Order item routes
 
 
 
