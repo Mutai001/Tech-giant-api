@@ -40,3 +40,25 @@ export const loginVerificationSchema = z.object({
   email: emailSchema,
   code: z.string().length(6, "Verification code must be 6 digits"),
 });
+
+// Add to the bottom of auth.validator.ts
+
+// Update user schema
+export const updateUserSchema = z.object({
+  fullName: z.string().min(2, "Full name must be at least 2 characters").optional(),
+  email: emailSchema.optional(),
+  phone: z.string().min(10, "Phone number must be at least 10 characters").optional(),
+  address: z.string().optional(),
+  role: z.string().optional(),
+});
+
+// Change password schema
+export const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1, "Current password is required"),
+  newPassword: passwordSchema,
+});
+
+// User ID schema
+export const userIdSchema = z.object({
+  userId: z.number().int().positive("User ID must be a positive integer"),
+});
