@@ -9,7 +9,7 @@ import {
 } from "./categories.controller";
 import { categorySchema, categoryUpdateSchema } from "./categories.validator";
 
-const categoryRouter = new Hono();
+export const categoryRouter = new Hono();
 
 // Public routes
 categoryRouter.get("/", listCategories);
@@ -30,4 +30,4 @@ categoryRouter.patch(
 
 categoryRouter.delete("/:id{[0-9]+}", deleteCategory);
 
-export default categoryRouter;
+// export default categoryRouter;
