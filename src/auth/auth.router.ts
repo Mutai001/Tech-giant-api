@@ -8,7 +8,7 @@ import {
   verifyLoginCode,
   getUsers,
   changePwd,
-  deleteUser,
+  removeUser,
   getUser,
   update
 } from './auth.controller';
@@ -74,4 +74,4 @@ authRouter.patch('/users/:id/change-password',
   zValidator('json', changePasswordSchema, validationErrorHandler),
   changePwd
 );
-authRouter.delete('/users/:id', deleteUser);
+authRouter.delete('/users/:id', removeUser);

@@ -319,3 +319,5 @@ export const removeUser = async (c: Context): Promise<Response> => {
     }, 500);
   }
 };
+
+export { deleteUser };

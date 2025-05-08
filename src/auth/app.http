@@ -109,10 +109,10 @@ Authorization: Bearer Bearer YOUR_VALID_TOKEN_HERE
 Content-Type: application/json
 
 {
-  "currentPassword": "OldPass123!",
+  "currentPassword": "AdminAccess2023!",
   "newPassword": "NewPass123!"
 }
 
 ### Delete user
-DELETE http://localhost:8000/api/auth/users/1
+DELETE http://localhost:8000/api/auth/users/8
 Authorization: Bearer Bearer YOUR_VALID_TOKEN_HERE
