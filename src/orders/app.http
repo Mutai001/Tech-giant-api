@@ -19,11 +19,11 @@ Authorization: Bearer token
 }
 
 ### Get order by ID
-GET http://localhost:8000/api/orders/5
+GET http://localhost:8000/api/orders/1
 Authorization: Bearer token
 
 ### Update order status
-PATCH http://localhost:8000/api/orders/5
+PATCH http://localhost:8000/api/orders/1
 Content-Type: application/json
 Authorization: Bearer token
 
@@ -33,5 +33,5 @@ Authorization: Bearer token
 }
 
 ### Cancel order
-DELETE http://localhost:8000/api/orders/5/cancel
+DELETE http://localhost:8000/api/orders/1/cancel
 Authorization: Bearer token
