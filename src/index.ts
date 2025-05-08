@@ -6,7 +6,7 @@ import { logger } from "hono/logger";
 import { serve } from "@hono/node-server";
 
 // Import routers
-import { adminRouter } from './auth/admin.router';
+import { authRouter } from './auth/auth.router';
 import { categoryRouter } from './categories/categories.router';
 import { productRouter } from './product/product.router';
 import { productMediaRouter } from './product-media/product-media.router';
@@ -34,7 +34,7 @@ app.use(
 app.get("/", (c) => c.json({ message: "Server is running" }, 200));
 
 // API Routes
-app.route("/api/admin", adminRouter); // Admin authentication routes  
+app.route("/api/auth", authRouter); // Admin authentication routes  
 app.route("/api/categories", categoryRouter); // Category routes
 app.route("/api/products", productRouter); // Product routes
 app.route("/api/product-media", productMediaRouter); // Product media routes

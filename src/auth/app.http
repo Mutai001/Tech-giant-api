@@ -4,9 +4,9 @@ Content-Type: application/json
 
 {
   "fullName": "System Administrator",
-  "email": "admin@example.com",
+  "email": "149xenophobic@chefalicious.com",
   "password": "AdminAccess2023!",
-  "phone": "+254712345678",
+  "phone": "+254312345448",
   "role": "admin"
 }
 
@@ -16,18 +16,18 @@ Content-Type: application/json
 
 {
   "fullName": "Regular User",
-  "email": "user@example.com",
+  "email": "omusekim@gmail.com",
   "password": "UserPass123!",
-  "phone": "+254787654321"
+  "phone": "+254782974321"
 }
 
-### Verify Email
+### Verify Email### Verify Email
 POST http://localhost:8000/api/auth/verify
 Content-Type: application/json
 
 {
-  "email": "admin@example.com",
-  "code": "123456" // Replace with actual code
+  "email": "omusekim@gmail.com",
+  "code": "901680"
 }
 
 ### Resend Verification Code
@@ -43,8 +43,8 @@ POST http://localhost:8000/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin@example.com",
-  "password": "AdminAccess2023!"
+  "email": "omusekim@gmail.com",
+  "password": "UserPass123!"
 }
 
 ### Login with Verification Code

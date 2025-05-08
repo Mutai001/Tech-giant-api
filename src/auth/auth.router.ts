@@ -17,52 +17,39 @@ import {
 
 export const authRouter = new Hono();
 
-// User Registration
+const validationErrorHandler = (result: any, c: any) => {
+  if (!result.success) {
+    return c.json({
+      error: "Validation failed",
+      details: result.error.issues.map((issue: any) => ({
+        field: issue.path.join('.'),
+        message: issue.message
+      }))
+    }, 400);
+  }
+};
+
 authRouter.post('/register', 
-  zValidator('json', registerSchema, (result, c) => {
-    if (!result.success) {
-      return c.json(result.error.issues, 400);
-    }
-  }), 
+  zValidator('json', registerSchema, validationErrorHandler), 
   register
 );
 
-// Email Verification
 authRouter.post('/verify', 
-  zValidator('json', verifyEmailSchema, (result, c) => {
-    if (!result.success) {
-      return c.json(result.error.issues, 400);
-    }
-  }), 
+  zValidator('json', verifyEmailSchema, validationErrorHandler), 
   verify
 );
 
-// Resend Verification Code
 authRouter.post('/resend-code', 
-  zValidator('json', resendVerificationSchema, (result, c) => {
-    if (!result.success) {
-      return c.json(result.error.issues, 400);
-    }
-  }), 
+  zValidator('json', resendVerificationSchema, validationErrorHandler), 
   resendCode
 );
 
-// Login
 authRouter.post('/login', 
-  zValidator('json', loginSchema, (result, c) => {
-    if (!result.success) {
-      return c.json(result.error.issues, 400);
-    }
-  }), 
+  zValidator('json', loginSchema, validationErrorHandler), 
   login
 );
 
-// Login with Verification Code
 authRouter.post('/login/verify', 
-  zValidator('json', loginVerificationSchema, (result, c) => {
-    if (!result.success) {
-      return c.json(result.error.issues, 400);
-    }
-  }), 
+  zValidator('json', loginVerificationSchema, validationErrorHandler), 
   verifyLoginCode
 );

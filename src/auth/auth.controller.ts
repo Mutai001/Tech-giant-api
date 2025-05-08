@@ -14,34 +14,53 @@ import {
   loginVerificationSchema
 } from "./auth.validator";
 
-// Define response types for better type safety
-type AuthResponse = {
-  success: boolean;
-  message: string;
-  user?: {
-    id: number;
-    email: string;
-    fullName: string;
-    role: string;
-    tokenExpires?: number;
-    isVerified?: boolean;
-  };
+// Define strict response types
+type UserData = {
+  id: number;
+  email: string;
+  fullName: string;
+  role: string;
+  tokenExpires?: number;
+  isVerified?: boolean;
+};
+
+type AuthSuccessResponse = {
+  success: true;
+  message?: string;
+  user: UserData;
   token?: string;
+  requiresVerification?: never;
+};
+
+type AuthErrorResponse = {
+  success: false;
+  message: string;
+  user?: never;
+  token?: never;
   requiresVerification?: boolean;
-  error?: string;
+};
+
+type AuthResponse = AuthSuccessResponse | AuthErrorResponse;
+
+const handleJsonParseError = async (c: Context) => {
+  try {
+    return await c.req.json();
+  } catch (error) {
+    throw new Error("Invalid JSON format in request body");
+  }
 };
 
 export const register = async (c: Context) => {
   try {
-    const userData = await c.req.json();
-    const result = await registerUser(userData);
+    const userData = await handleJsonParseError(c);
+    const result = await registerUser(userData) as AuthResponse;
     
     if (!result.success) {
       return c.json({ error: result.message }, 400);
     }
 
     return c.json({ 
-      message: result.message,
+      message: result.message || "Registration successful",
       user: result.user 
     }, 201);
 
@@ -56,7 +75,7 @@ export const register = async (c: Context) => {
 
 export const login = async (c: Context) => {
   try {
-    const credentials = await c.req.json();
+    const credentials = await handleJsonParseError(c);
     const result = await loginUser(credentials) as AuthResponse;
     
     if (!result.success) {
@@ -70,7 +89,7 @@ export const login = async (c: Context) => {
     }
 
     if (!result.token) {
-      return c.json({ error: "Authentication token not generated" }, 500);
+      throw new Error("Authentication token not generated");
     }
 
     return c.json({
@@ -89,7 +108,12 @@ export const login = async (c: Context) => {
 
 export const verify = async (c: Context) => {
   try {
-    const { email, code } = await c.req.json();
+    const { email, code } = await handleJsonParseError(c);
+    
+    if (!email || !code) {
+      return c.json({ error: "Email and code are required" }, 400);
+    }
+
     const result = await verifyEmail(email, code) as AuthResponse;
     
     if (!result.success) {
@@ -97,7 +121,7 @@ export const verify = async (c: Context) => {
     }
 
     return c.json({ 
-      message: result.message,
+      message: result.message || "Verification successful",
       user: result.user 
     }, 200);
 
@@ -112,15 +136,20 @@ export const verify = async (c: Context) => {
 
 export const resendCode = async (c: Context) => {
   try {
-    const { email } = await c.req.json();
-    const result = await resendVerificationCode(email);
+    const { email } = await handleJsonParseError(c);
+    
+    if (!email) {
+      return c.json({ error: "Email is required" }, 400);
+    }
+
+    const result = await resendVerificationCode(email) as AuthResponse;
     
     if (!result.success) {
       return c.json({ error: result.message }, 400);
     }
 
     return c.json({ 
-      message: result.message
+      message: result.message || "Verification code resent"
     }, 200);
 
   } catch (error: any) {
@@ -134,7 +163,12 @@ export const resendCode = async (c: Context) => {
 
 export const verifyLoginCode = async (c: Context) => {
   try {
-    const { email, code } = await c.req.json();
+    const { email, code } = await handleJsonParseError(c);
+    
+    if (!email || !code) {
+      return c.json({ error: "Email and code are required" }, 400);
+    }
+
     const result = await verifyLogin(email, code) as AuthResponse;
     
     if (!result.success) {
@@ -142,7 +176,7 @@ export const verifyLoginCode = async (c: Context) => {
     }
 
     if (!result.token) {
-      return c.json({ error: "Authentication token not generated" }, 500);
+      throw new Error("Authentication token not generated");
     }
 
     return c.json({
