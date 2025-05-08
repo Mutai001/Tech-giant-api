@@ -1,38 +1,60 @@
-import { eq } from "drizzle-orm";
+import { eq, and, ne } from "drizzle-orm";
 import db from "../drizzle/db";
-import { categories, Category, NewCategory } from "../drizzle/schema";
+import { categories } from "../drizzle/schema";
+import type { Category, NewCategory } from "../drizzle/schema";
 
-// Service to get all categories or a limited number of categories
-export const categoriesService = async (limit?: number): Promise<Category[] | null> => {
-  if (limit) {
-    return await db.query.categories.findMany({
-      limit: limit,
-    });
-  }
-  return await db.query.categories.findMany();
+export const getAllCategories = async (limit?: number): Promise<Category[]> => {
+  const query = db.select().from(categories).orderBy(categories.createdAt);
+  if (limit) query.limit(limit);
+  return await query;
 };
 
-// Service to get a single category by ID
-export const getCategoryService = async (id: number): Promise<NewCategory | undefined> => {
-  return await db.query.categories.findFirst({
-    where: eq(categories.categoryId, id),
-  });
+export const getCategoryById = async (id: number): Promise<Category | null> => {
+  const [category] = await db.select()
+    .from(categories)
+    .where(eq(categories.categoryId, id));
+  return category || null;
 };
 
-// Service to create a new category
-export const createCategoryService = async (category: NewCategory) => {
-  await db.insert(categories).values(category);
-  return "Category created successfully";
+export const createCategory = async (categoryData: NewCategory): Promise<Category> => {
+  const [category] = await db.insert(categories)
+    .values(categoryData)
+    .returning();
+  return category;
 };
 
-// Service to update an existing category by ID
-export const updateCategoryService = async (id: number, category: NewCategory) => {
-  await db.update(categories).set(category).where(eq(categories.categoryId, id));
-  return "Category updated successfully";
+export const updateCategory = async (
+  id: number,
+  categoryData: Partial<NewCategory>
+): Promise<Category> => {
+  const [category] = await db.update(categories)
+    .set({
+      ...categoryData,
+      updatedAt: new Date()
+    })
+    .where(eq(categories.categoryId, id))
+    .returning();
+  return category;
 };
 
-// Service to delete a category by ID
-export const deleteCategoryService = async (id: number) => {
-  await db.delete(categories).where(eq(categories.categoryId, id));
-  return "Category deleted successfully";
+export const deleteCategory = async (id: number): Promise<Category> => {
+  const [category] = await db.delete(categories)
+    .where(eq(categories.categoryId, id))
+    .returning();
+  return category;
+};
+
+export const checkCategoryExists = async (name: string, excludeId?: number) => {
+  const query = db.select()
+    .from(categories)
+    .where(
+      excludeId 
+        ? and(
+            eq(categories.name, name),
+            ne(categories.categoryId, excludeId)
+          )
+        : eq(categories.name, name)
+    );
+  const [existing] = await query;
+  return !!existing;
 };
