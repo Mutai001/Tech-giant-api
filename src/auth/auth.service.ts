@@ -302,3 +302,185 @@ export const verifyLogin = async (email: string, code: string) => {
     };
   }
 };
+
+// Add to the bottom of auth.service.ts
+
+export const getUserById = async (userId: number) => {
+  try {
+    const [user] = await db.select()
+      .from(users)
+      .where(eq(users.userId, userId));
+
+    if (!user) {
+      return { success: false, message: "User not found" };
+    }
+
+    // Omit sensitive fields
+    const { passwordHash, verificationCode, verificationCodeExpires, ...safeUser } = user;
+
+    return { 
+      success: true,
+      user: safeUser
+    };
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return { success: false, message: "Failed to fetch user" };
+  }
+};
+
+export const getAllUsers = async () => {
+  try {
+    const userList = await db.select({
+      userId: users.userId,
+      fullName: users.fullName,
+      email: users.email,
+      phone: users.phone,
+      role: users.role,
+      address: users.address,
+      isVerified: users.isVerified,
+      createdAt: users.createdAt,
+      updatedAt: users.updatedAt
+    })
+    .from(users);
+
+    return { 
+      success: true,
+      users: userList
+    };
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return { success: false, message: "Failed to fetch users" };
+  }
+};
+
+export const updateUser = async (userId: number, updateData: {
+  fullName?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  role?: string;
+}) => {
+  try {
+    // Check if email is being updated to an existing one
+    if (updateData.email) {
+      const [existingUser] = await db.select()
+        .from(users)
+        .where(
+          and(
+            eq(users.email, updateData.email),
+            ne(users.userId, userId)
+          )
+        );
+
+      if (existingUser) {
+        return { 
+          success: false, 
+          message: "Email already in use by another user" 
+        };
+      }
+    }
+
+    // Check if phone is being updated to an existing one
+    if (updateData.phone) {
+      const [existingUser] = await db.select()
+        .from(users)
+        .where(
+          and(
+            eq(users.phone, updateData.phone),
+            ne(users.userId, userId)
+          )
+        );
+
+      if (existingUser) {
+        return { 
+          success: false, 
+          message: "Phone number already in use by another user" 
+        };
+      }
+    }
+
+    const [updatedUser] = await db.update(users)
+      .set({
+        ...updateData,
+        updatedAt: new Date()
+      })
+      .where(eq(users.userId, userId))
+      .returning();
+
+    if (!updatedUser) {
+      return { success: false, message: "User not found" };
+    }
+
+    // Omit sensitive fields
+    const { passwordHash, verificationCode, verificationCodeExpires, ...safeUser } = updatedUser;
+
+    return { 
+      success: true,
+      message: "User updated successfully",
+      user: safeUser
+    };
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return { success: false, message: "Failed to update user" };
+  }
+};
+
+export const changePassword = async (userId: number, currentPassword: string, newPassword: string) => {
+  try {
+    // First verify current password
+    const [user] = await db.select()
+      .from(users)
+      .where(eq(users.userId, userId));
+
+    if (!user) {
+      return { success: false, message: "User not found" };
+    }
+
+    const passwordMatch = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!passwordMatch) {
+      return { success: false, message: "Current password is incorrect" };
+    }
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await db.update(users)
+      .set({ 
+        passwordHash: hashedPassword,
+        updatedAt: new Date()
+      })
+      .where(eq(users.userId, userId));
+
+    return { 
+      success: true,
+      message: "Password changed successfully"
+    };
+  } catch (error) {
+    console.error("Error changing password:", error);
+    return { success: false, message: "Failed to change password" };
+  }
+};
+
+export const deleteUser = async (userId: number) => {
+  try {
+    const [user] = await db.delete(users)
+      .where(eq(users.userId, userId))
+      .returning();
+
+    if (!user) {
+      return { success: false, message: "User not found" };
+    }
+
+    // Omit sensitive fields
+    const { passwordHash, verificationCode, verificationCodeExpires, ...safeUser } = user;
+
+    return { 
+      success: true,
+      message: "User deleted successfully",
+      user: safeUser
+    };
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return { success: false, message: "Failed to delete user" };
+  }
+};
