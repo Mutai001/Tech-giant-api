@@ -1,0 +1,37 @@
+### Get user's orders
+GET http://localhost:8000/api/orders/user/1
+Authorization: Bearer token
+
+### Get orders by status
+GET http://localhost:8000/api/orders/status/pending
+Authorization: Bearer token
+
+### Create new order
+POST http://localhost:8000/api/orders
+Content-Type: application/json
+Authorization: Bearer token
+
+{
+  "userId": 1,
+  "totalAmount": 99.99,
+  "shippingAddress": "123 Main St, Nairobi",
+  "contactPhone": "+254712345678"
+}
+
+### Get order by ID
+GET http://localhost:8000/api/orders/5
+Authorization: Bearer token
+
+### Update order status
+PATCH http://localhost:8000/api/orders/5
+Content-Type: application/json
+Authorization: Bearer token
+
+{
+  "status": "shipped",
+  "trackingNumber": "TRK123456"
+}
+
+### Cancel order
+DELETE http://localhost:8000/api/orders/5/cancel
+Authorization: Bearer token
