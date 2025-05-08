@@ -11,7 +11,13 @@ import {
 } from "./payments.controller";
 import { paymentSchema, mpesaPaymentSchema, paymentUpdateSchema } from "./payments.validator";
 
-export const paymentRouter = new Hono();
+const paymentRouter = new Hono();
+
+// Add middleware to log requests (optional)
+paymentRouter.use('*', async (c, next) => {
+  console.log(`[${c.req.method}] ${c.req.path}`);
+  await next();
+});
 
 // Payment operations
 paymentRouter.post(
@@ -26,8 +32,12 @@ paymentRouter.post(
   initiateMpesaPaymentHandler
 );
 
-paymentRouter.post("/mpesa-callback", mpesaCallbackHandler);
+paymentRouter.post(
+  "/mpesa-callback", 
+  mpesaCallbackHandler
+);
 
+// Payment management
 paymentRouter.get("/:id{[0-9]+}", getPayment);
 paymentRouter.patch(
   "/:id{[0-9]+}",
@@ -39,3 +49,4 @@ paymentRouter.patch(
 paymentRouter.get("/order/:orderId{[0-9]+}", listOrderPayments);
 paymentRouter.get("/user/:userId{[0-9]+}", listUserPayments);
 
+export { paymentRouter };
