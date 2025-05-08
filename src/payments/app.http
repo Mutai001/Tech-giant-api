@@ -1,0 +1,56 @@
+### Create payment
+POST http://localhost:8000/api/payments
+Content-Type: application/json
+Authorization: Bearer token
+
+{
+  "orderId": 5,
+  "userId": 1,
+  "method": "card",
+  "amount": 99.99
+}
+
+### Initiate M-Pesa payment
+POST http://localhost:8000/api/payments/mpesa
+Content-Type: application/json
+Authorization: Bearer token
+{
+  "orderId": 5,
+  "userId": 1,
+  "amount": 99.99,
+  "phoneNumber": "254712345678"
+}
+
+### M-Pesa callback (simulate)
+POST http://localhost:8000/api/payments/mpesa-callback
+Content-Type: application/json
+
+{
+  "MerchantRequestID": "AG_20240510_12345",
+  "CheckoutRequestID": "ws_CO_10052024123456789",
+  "ResultCode": 0,
+  "ResultDesc": "Success",
+  "MpesaReceiptNumber": "RI703K4A5P"
+}
+
+### Get payment
+GET http://localhost:8000/api/payments/1
+Authorization: Bearer token
+
+### Update payment status
+PATCH http://localhost:8000/api/payments/1
+Content-Type: application/json
+Authorization: Bearer token
+
+{
+  "status": "completed",
+  "transactionCode": "TRX123456"
+}
+
+### Get payments by order
+GET http://localhost:8000/api/payments/order/5
+Authorization: Bearer token
+
+### Get payments by user
+GET http://localhost:8000/api/payments/user/1
+Authorization: Bearer token
