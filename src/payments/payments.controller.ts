@@ -18,7 +18,12 @@ export const createNewPayment = async (c: Context) => {
       return c.json({ errors: validation.error.flatten() }, 400);
     }
 
-    const payment = await createPayment(validation.data);
+    const paymentData = {
+      ...validation.data,
+      amount: validation.data.amount.toString(),
+      transactionCode: "", // Provide a default or generate as needed
+    };
+    const payment = await createPayment(paymentData);
     return c.json(payment, 201);
   } catch (error) {
     return c.json({ error: "Failed to create payment" }, 500);
