@@ -19,6 +19,9 @@ export const users = pgTable("users", {
   passwordHash: text("password_hash").notNull(),
   role: varchar("role", { length: 20 }).notNull().default("user"), // "admin" | "user"
   address: text("address"),
+  isVerified: boolean("is_verified").default(false),
+  verificationCode: varchar("verification_code", { length: 6 }),
+  verificationCodeExpires: timestamp("verification_code_expires"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().$onUpdateFn(() => new Date()),
 });
