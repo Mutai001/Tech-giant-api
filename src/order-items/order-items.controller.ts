@@ -42,7 +42,13 @@ export const createNewOrderItem = async (c: Context) => {
       return c.json({ errors: validation.error.flatten() }, 400);
     }
 
-    const item = await createOrderItem(validation.data);
+    const item = await createOrderItem({
+      ...validation.data,
+      priceAtPurchase: String(validation.data.priceAtPurchase),
+      discountApplied: validation.data.discountApplied !== undefined && validation.data.discountApplied !== null
+        ? String(validation.data.discountApplied)
+        : validation.data.discountApplied
+    });
     return c.json(item, 201);
   } catch (error) {
     return c.json({ error: "Failed to create order item" }, 500);
@@ -60,7 +66,12 @@ export const updateExistingItem = async (c: Context) => {
       return c.json({ errors: validation.error.flatten() }, 400);
     }
 
-    const item = await updateOrderItem(id, validation.data);
+    const item = await updateOrderItem(id, {
+      ...validation.data,
+      discountApplied: validation.data.discountApplied !== undefined && validation.data.discountApplied !== null
+        ? String(validation.data.discountApplied)
+        : validation.data.discountApplied
+    });
     return c.json(item, 200);
   } catch (error) {
     return c.json({ error: "Failed to update order item" }, 500);
