@@ -42,7 +42,8 @@ export const createNewOrder = async (c: Context) => {
       return c.json({ errors: validation.error.flatten() }, 400);
     }
 
-    const order = await createOrder(validation.data);
+    const orderData = { ...validation.data, totalAmount: String(validation.data.totalAmount) };
+    const order = await createOrder(orderData);
     return c.json(order, 201);
   } catch (error) {
     return c.json({ error: "Failed to create order" }, 500);

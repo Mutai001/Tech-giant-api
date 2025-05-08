@@ -10,7 +10,7 @@ import {
 } from "./orders.controller";
 import { orderSchema, orderUpdateSchema } from "./orders.validator";
 
-const orderRouter = new Hono();
+export const orderRouter = new Hono();
 
 // User-specific routes
 orderRouter.get("/user/:userId{[0-9]+}", listUserOrders);
@@ -35,4 +35,4 @@ orderRouter.patch(
 
 orderRouter.delete("/:id{[0-9]+}/cancel", cancelUserOrder);
 
-export default orderRouter;
+// export default orderRouter;
