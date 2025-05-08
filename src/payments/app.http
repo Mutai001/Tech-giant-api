@@ -1,26 +1,27 @@
 ### Create payment
 POST http://localhost:8000/api/payments
 Content-Type: application/json
-Authorization: Bearer token
+Authorization: Bearer 
 
 {
   "orderId": 5,
   "userId": 1,
   "method": "card",
-  "amount": 99.99
+  "amount": 99.99,
+  "transactionCode": "CARD-12345"
 }
 
 ### Initiate M-Pesa payment
 POST http://localhost:8000/api/payments/mpesa
 Content-Type: application/json
-Authorization: Bearer token
+Authorization: Bearer 
 
 {
-  "orderId": 2,
-  "userId": 1,
-  "amount": 99.99,
-  "phoneNumber": "254722227154",
-  "method": "mpesa"  // Add this line
+  "orderId": 3,
+  "userId": 2,
+  "amount": 1000,
+  "phoneNumber": "254712345678",
+  "method": "mpesa"
 }
 
 ### M-Pesa callback (simulate)
@@ -37,12 +38,12 @@ Content-Type: application/json
 
 ### Get payment
 GET http://localhost:8000/api/payments/1
-Authorization: Bearer token
+Authorization: Bearer 
 
 ### Update payment status
 PATCH http://localhost:8000/api/payments/1
 Content-Type: application/json
-Authorization: Bearer token
+Authorization: Bearer 
 
 {
   "status": "completed",
@@ -51,8 +52,8 @@ Authorization: Bearer token
 
 ### Get payments by order
 GET http://localhost:8000/api/payments/order/5
-Authorization: Bearer token
+Authorization: Bearer 
 
 ### Get payments by user
 GET http://localhost:8000/api/payments/user/1
-Authorization: Bearer token
+Authorization: Bearer 

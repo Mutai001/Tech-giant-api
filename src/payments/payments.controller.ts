@@ -33,9 +33,10 @@ export const createNewPayment = async (c: Context) => {
     }
 
     const payment = await createPayment({
-      ...validation.data,
-      amount: validation.data.amount.toString(), // Convert to string for decimal
-      transactionCode: validation.data.transactionCode || ""
+        ...validation.data,
+        amount: validation.data.amount.toString() // Convert to string for service
+        ,
+        transactionCode: ""
     });
     
     return c.json({ 
@@ -65,7 +66,7 @@ export const initiateMpesaPaymentHandler = async (c: Context) => {
 
     const payment = await processMpesaPayment({
       ...validation.data,
-      amount: validation.data.amount.toString() // Convert to string for decimal
+      amount: validation.data.amount // Keep as number for service
     });
     
     return c.json({
