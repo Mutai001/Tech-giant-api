@@ -15,6 +15,13 @@ export const createPayment = async (paymentData: NewPayment): Promise<Payment> =
   return payment;
 };
 
+//Get all payments
+export const getAllPayments = async (): Promise<Payment[]> => {
+  return await db.select()
+    .from(payments)
+    .orderBy(payments.createdAt);
+}
+
 export const getPaymentById = async (id: number): Promise<Payment | null> => {
   const [payment] = await db.select()
     .from(payments)

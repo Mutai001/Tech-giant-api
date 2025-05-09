@@ -1,6 +1,7 @@
 import { Context } from "hono";
 import {
   createPayment,
+  getAllPayments,
   getPaymentById,
   updatePayment,
   processMpesaPayment,
@@ -81,6 +82,22 @@ export const initiateMpesaPaymentHandler = async (c: Context) => {
     }, 500);
   }
 };
+
+//Get all payments
+export const getAllPaymentService = async (c: Context) => {
+  try {
+    const payments = await getAllPayments();
+    return c.json({ 
+      success: true,
+      payments 
+    }, 200);
+  } catch (error: any) {
+    return c.json({ 
+      success: false,
+      error: error.message || "Failed to fetch payments" 
+    }, 500);
+  }
+}
 
 export const getPayment = async (c: Context) => {
   const id = parseInt(c.req.param('id'));

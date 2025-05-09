@@ -1,3 +1,6 @@
+###Get all payments
+GET http://localhost:8000/api/payments
+
 ### Create payment
 POST http://localhost:8000/api/payments
 Content-Type: application/json
@@ -17,10 +20,10 @@ Content-Type: application/json
 Authorization: Bearer 
 
 {
-  "orderId": 2,
-  "userId": 2,
+  "orderId": 1,
+  "userId": 1,
   "amount": 1000,
-  "phoneNumber": "254712345678",
+  "phoneNumber": "254712313678",
   "method": "mpesa"
 }
 

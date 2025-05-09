@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import {
   createNewPayment,
+  getAllPaymentService,
   getPayment,
   updatePaymentStatus,
   listOrderPayments,
@@ -44,6 +45,9 @@ paymentRouter.patch(
   zValidator("json", paymentUpdateSchema),
   updatePaymentStatus
 );
+
+// Get all payments
+paymentRouter.get("/", getAllPaymentService);
 
 // Query routes
 paymentRouter.get("/order/:orderId{[0-9]+}", listOrderPayments);
