@@ -1,5 +1,6 @@
 import { Context } from "hono";
 import {
+  getAllOrders,
   getOrdersByUser,
   getOrderById,
   createOrder,
@@ -9,6 +10,18 @@ import {
 } from "./orders.service";
 import { orderSchema, orderUpdateSchema } from "./orders.validator";
 
+
+// List all orders
+export const listOrders = async (c: Context) => {
+  try {
+    const orders = await getAllOrders();
+    return c.json(orders, 200);
+  } catch (error) {
+    return c.json({ error: "Failed to fetch orders" }, 500);
+  }
+};
+
+// List orders by user
 export const listUserOrders = async (c: Context) => {
   const userId = parseInt(c.req.param('userId'));
   if (isNaN(userId)) return c.json({ error: "Invalid user ID" }, 400);

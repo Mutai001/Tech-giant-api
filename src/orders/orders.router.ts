@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import {
+  listOrders,
   listUserOrders,
   getOrder,
   createNewOrder,
@@ -11,6 +12,9 @@ import {
 import { orderSchema, orderUpdateSchema } from "./orders.validator";
 
 export const orderRouter = new Hono();
+
+// List all orders
+orderRouter.get("/", listOrders);
 
 // User-specific routes
 orderRouter.get("/user/:userId{[0-9]+}", listUserOrders);

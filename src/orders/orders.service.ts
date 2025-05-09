@@ -2,6 +2,14 @@ import { eq, and } from "drizzle-orm";
 import db from "../drizzle/db";
 import { orders, Order, NewOrder } from "../drizzle/schema";
 
+//Get all orders
+export const getAllOrders = async (): Promise<Order[]> => {
+  return await db.select()
+    .from(orders)
+    .orderBy(orders.createdAt);
+};
+
+//Get orders by user
 export const getOrdersByUser = async (userId: number): Promise<Order[]> => {
   return await db.select()
     .from(orders)

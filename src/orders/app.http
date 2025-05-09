@@ -1,3 +1,7 @@
+### Get all orders
+GET http://localhost:8000/api/orders
+Authorization: Bearer token
+
 ### Get user's orders
 GET http://localhost:8000/api/orders/user/1
 Authorization: Bearer token
