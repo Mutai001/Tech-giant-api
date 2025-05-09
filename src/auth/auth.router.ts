@@ -5,7 +5,7 @@ import {
   login, 
   verify, 
   resendCode,
-  verifyLoginCode,
+  // verifyLoginCode,
   getUsers,
   changePwd,
   removeUser,
@@ -56,10 +56,10 @@ authRouter.post('/login',
   login
 );
 
-authRouter.post('/login/verify', 
-  zValidator('json', loginVerificationSchema, validationErrorHandler), 
-  verifyLoginCode
-);
+// authRouter.post('/login/verify', 
+//   zValidator('json', loginVerificationSchema, validationErrorHandler), 
+//   verifyLoginCode
+// );
 
 // Add to the bottom of auth.router.ts
 

@@ -4,7 +4,7 @@ import {
   loginUser, 
   verifyEmail, 
   resendVerificationCode,
-  verifyLogin,
+  // verifyLogin,
   changePassword,
   getAllUsers,
   getUserById,
@@ -166,37 +166,37 @@ export const resendCode = async (c: Context) => {
   }
 };
 
-export const verifyLoginCode = async (c: Context) => {
-  try {
-    const { email, code } = await handleJsonParseError(c);
+// export const verifyLoginCode = async (c: Context) => {
+//   try {
+//     const { email, code } = await handleJsonParseError(c);
     
-    if (!email || !code) {
-      return c.json({ error: "Email and code are required" }, 400);
-    }
+//     if (!email || !code) {
+//       return c.json({ error: "Email and code are required" }, 400);
+//     }
 
-    const result = await verifyLogin(email, code) as AuthResponse;
+//     const result = await verifyLogin(email, code) as AuthResponse;
     
-    if (!result.success) {
-      return c.json({ error: result.message }, 401);
-    }
+//     if (!result.success) {
+//       return c.json({ error: result.message }, 401);
+//     }
 
-    if (!result.token) {
-      throw new Error("Authentication token not generated");
-    }
+//     if (!result.token) {
+//       throw new Error("Authentication token not generated");
+//     }
 
-    return c.json({
-      token: result.token,
-      user: result.user
-    }, 200);
+//     return c.json({
+//       token: result.token,
+//       user: result.user
+//     }, 200);
 
-  } catch (error: any) {
-    console.error("Login verification error:", error);
-    return c.json({ 
-      error: error?.message || "Login verification failed",
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, 500);
-  }
-};
+//   } catch (error: any) {
+//     console.error("Login verification error:", error);
+//     return c.json({ 
+//       error: error?.message || "Login verification failed",
+//       details: error instanceof Error ? error.message : 'Unknown error'
+//     }, 500);
+//   }
+// };
 
 // Add to the bottom of auth.controller.ts
 

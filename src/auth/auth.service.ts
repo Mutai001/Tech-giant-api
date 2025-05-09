@@ -249,59 +249,59 @@ export const loginUser = async (credentials: {
   }
 };
 
-export const verifyLogin = async (email: string, code: string) => {
-  try {
-    // First verify the code
-    const verifyResult = await verifyEmail(email, code);
-    if (!verifyResult.success) {
-      return verifyResult;
-    }
+// export const verifyLogin = async (email: string, code: string) => {
+//   try {
+//     // First verify the code
+//     const verifyResult = await verifyEmail(email, code);
+//     if (!verifyResult.success) {
+//       return verifyResult;
+//     }
 
-    // Then proceed with login
-    const [user] = await db.select()
-      .from(users)
-      .where(eq(users.email, email));
+//     // Then proceed with login
+//     const [user] = await db.select()
+//       .from(users)
+//       .where(eq(users.email, email));
 
-    if (!user) {
-      return { success: false, message: "User not found" };
-    }
+//     if (!user) {
+//       return { success: false, message: "User not found" };
+//     }
 
-    // Generate JWT token
-    if (!process.env.JWT_SECRET) {
-      throw new Error("JWT_SECRET is not configured");
-    }
+//     // Generate JWT token
+//     if (!process.env.JWT_SECRET) {
+//       throw new Error("JWT_SECRET is not configured");
+//     }
 
-    const payload = {
-      sub: user.userId.toString(),
-      role: user.role,
-      email: user.email,
-      iss: 'your-app-name',
-      iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + (60 * 60 * 3) // 3 hours expiration
-    };
+//     const payload = {
+//       sub: user.userId.toString(),
+//       role: user.role,
+//       email: user.email,
+//       iss: 'your-app-name',
+//       iat: Math.floor(Date.now() / 1000),
+//       exp: Math.floor(Date.now() / 1000) + (60 * 60 * 3) // 3 hours expiration
+//     };
 
-    const token = await sign(payload, process.env.JWT_SECRET);
+//     const token = await sign(payload, process.env.JWT_SECRET);
 
-    return { 
-      success: true,
-      token,
-      user: {
-        id: user.userId,
-        email: user.email,
-        fullName: user.fullName,
-        role: user.role,
-        tokenExpires: payload.exp
-      }
-    };
-  } catch (error) {
-    console.error("Verify login error:", error);
-    return { 
-      success: false, 
-      message: "Login verification failed",
-      error: error instanceof Error ? error.message : 'Unknown error'
-    };
-  }
-};
+//     return { 
+//       success: true,
+//       token,
+//       user: {
+//         id: user.userId,
+//         email: user.email,
+//         fullName: user.fullName,
+//         role: user.role,
+//         tokenExpires: payload.exp
+//       }
+//     };
+//   } catch (error) {
+//     console.error("Verify login error:", error);
+//     return { 
+//       success: false, 
+//       message: "Login verification failed",
+//       error: error instanceof Error ? error.message : 'Unknown error'
+//     };
+//   }
+// };
 
 // Add to the bottom of auth.service.ts
 
