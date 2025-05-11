@@ -25,11 +25,11 @@ app.use(
   "*",
   cors({
     origin: [
-      "http://localhost:5173",              // local dev
+      "http://localhost:5173", 
         // deployed frontend
     ],
     allowHeaders: ["Content-Type", "Authorization"],
-    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     credentials: true,
   })
 );

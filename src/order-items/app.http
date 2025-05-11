@@ -20,7 +20,7 @@ Authorization: Bearer token
 }
 
 ### Get order item
-GET http://localhost:8000/api/order-items/4
+GET http://localhost:8000/api/order-items/1
 Authorization: Bearer token
 
 ### Update order item
@@ -36,3 +36,5 @@ Authorization: Bearer token
 ### Delete order item
 DELETE http://localhost:8000/api/order-items/4
 Authorization: Bearer token
+
+### Get all order items
