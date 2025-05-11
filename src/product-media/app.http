@@ -5,7 +5,7 @@ GET http://localhost:8000/
 GET http://localhost:8000/api/product-media/product/2
 
 ### Get single media by ID
-GET http://localhost:8000/api/product-media/2
+GET http://localhost:8000/api/product-media/3
 
 ### Create media (admin)
 POST http://localhost:8000/api/product-media
@@ -19,7 +19,7 @@ Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
 }
 
 ### Update media (admin)
-PUT http://localhost:8000/api/product-media/2/product/2
+PUT http://localhost:8000/api/product-media/2/product/2 
 Content-Type: application/json
 Authorization: Bearer YOUR_ADMIN_JWT_TOKEN
 

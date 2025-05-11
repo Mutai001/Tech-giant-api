@@ -47,4 +47,4 @@ Content-Type: application/json
 }
 
 ### Remove product media
-DELETE http://localhost:8000/api/products/media/1/product/1
+DELETE http://localhost:8000/api/products/media/8/product/3

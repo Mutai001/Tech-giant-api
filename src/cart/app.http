@@ -9,7 +9,7 @@ Authorization: Bearer token
 
 {
   "userId": 1,
-  "productId": 2,
+  "productId": 4,
   "quantity": 2
 }
 
