@@ -25,7 +25,8 @@ app.use(
   "*",
   cors({
     origin: [
-      "http://localhost:5173", 
+      "http://localhost:5173",
+      "https://tech-giants.vercel.app" 
         // deployed frontend
     ],
     allowHeaders: ["Content-Type", "Authorization"],
