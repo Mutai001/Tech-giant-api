@@ -11,7 +11,6 @@ import {
 } from "./payments.service";
 import { paymentSchema, mpesaPaymentSchema, paymentUpdateSchema } from "./payments.validator";
 
-// Helper function for safe JSON parsing
 const parseJsonBody = async (c: Context) => {
   try {
     return await c.req.json();
@@ -34,16 +33,12 @@ export const createNewPayment = async (c: Context) => {
     }
 
     const payment = await createPayment({
-        ...validation.data,
-        amount: validation.data.amount.toString() // Convert to string for service
-        ,
-        transactionCode: ""
+      ...validation.data,
+      amount: String(validation.data.amount),
+      transactionCode: null
     });
     
-    return c.json({ 
-      success: true,
-      payment 
-    }, 201);
+    return c.json({ success: true, payment }, 201);
   } catch (error: any) {
     return c.json({ 
       success: false,
@@ -65,23 +60,16 @@ export const initiateMpesaPaymentHandler = async (c: Context) => {
       }, 400);
     }
 
-    const payment = await processMpesaPayment({
-      ...validation.data,
-      amount: validation.data.amount // Keep as number for service
-    });
-    
-    return c.json({
-      success: true,
-      payment
-    }, 201);
+    const payment = await processMpesaPayment(validation.data);
+    return c.json({ success: true, payment }, 201);
   } catch (error: any) {
-    console.error("M-Pesa initiation error:", error);
     return c.json({
       success: false,
       error: error.message || "M-Pesa payment failed to initiate"
     }, 500);
   }
 };
+
 
 //Get all payments
 export const getAllPaymentService = async (c: Context) => {
