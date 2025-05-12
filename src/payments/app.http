@@ -22,8 +22,8 @@ Authorization: Bearer
 {
   "orderId": 1,
   "userId": 1,
-  "amount": 1000,
-  "phoneNumber": "254712313678",
+  "amount": 100,
+  "phoneNumber": "254722227154",
   "method": "mpesa"
 }
 

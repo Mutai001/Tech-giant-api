@@ -100,7 +100,7 @@ export const payments = pgTable("payments", {
   orderId: integer("order_id").references(() => orders.orderId, { onDelete: "cascade" }).notNull(),
   userId: integer("user_id").references(() => users.userId, { onDelete: "cascade" }).notNull(),
   method: varchar("method", { length: 50 }).notNull(), // e.g., mpesa, card, etc.
-  transactionCode: varchar("transaction_code", { length: 100 }).unique().notNull(),
+   transactionCode: varchar("transaction_code", { length: 100 }), 
   amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
   status: varchar("status", { length: 50 }).default("pending"), // pending, completed, failed
   phoneNumber: varchar("phone_number", { length: 20 }),
