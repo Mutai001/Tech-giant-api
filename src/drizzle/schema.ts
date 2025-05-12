@@ -97,17 +97,18 @@ export const orderItems = pgTable("order_items", {
 // Payments Table
 export const payments = pgTable("payments", {
   paymentId: serial("payment_id").primaryKey(),
-  orderId: integer("order_id").references(() => orders.orderId, { onDelete: "cascade" }).notNull(),
-  userId: integer("user_id").references(() => users.userId, { onDelete: "cascade" }).notNull(),
-  method: varchar("method", { length: 50 }).notNull(), // e.g., mpesa, card, etc.
-   transactionCode: varchar("transaction_code", { length: 100 }), 
-  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
-  status: varchar("status", { length: 50 }).default("pending"), // pending, completed, failed
-  phoneNumber: varchar("phone_number", { length: 20 }),
-  merchantRequestId: varchar("merchant_request_id", { length: 100 }),
-  checkoutRequestId: varchar("checkout_request_id", { length: 100 }),
+  orderId: integer("order_id"),
+  userId: integer("user_id"),
+  method: text("method"),
+  amount: text("amount"),
+  status: text("status"),
+  phoneNumber: text("phone_number"),
+  merchantRequestId: text("merchant_request_id"),
+  checkoutRequestId: text("checkout_request_id"),
+  transactionCode: text("transaction_code"),
   paidAt: timestamp("paid_at"),
-  createdAt: timestamp("created_at").defaultNow(),
+  createdAt: timestamp("created_at"),
+  updatedAt: timestamp("updated_at") // Added updatedAt field
 });
 
 // ========== RELATIONS ========== //

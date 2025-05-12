@@ -4,7 +4,6 @@ import { payments } from "../drizzle/schema";
 import type { Payment, NewPayment } from "../drizzle/schema";
 import { initiateMpesaPayment } from "../services/mpesa.service";
 
-// Core payment operations
 export const createPayment = async (paymentData: NewPayment): Promise<Payment> => {
   const [payment] = await db.insert(payments)
     .values({
@@ -15,12 +14,11 @@ export const createPayment = async (paymentData: NewPayment): Promise<Payment> =
   return payment;
 };
 
-//Get all payments
 export const getAllPayments = async (): Promise<Payment[]> => {
   return await db.select()
     .from(payments)
     .orderBy(payments.createdAt);
-}
+};
 
 export const getPaymentById = async (id: number): Promise<Payment | null> => {
   const [payment] = await db.select()
@@ -31,20 +29,18 @@ export const getPaymentById = async (id: number): Promise<Payment | null> => {
 
 export const updatePayment = async (
   id: number,
-  paymentData: Omit<Partial<NewPayment>, 'createdAt' | 'updatedAt'> & { 
-    updatedAt?: Date 
-  }
+  paymentData: Partial<NewPayment>
 ): Promise<Payment> => {
   const [payment] = await db.update(payments)
     .set({
-      ...paymentData
+      ...paymentData,
+      updatedAt: new Date()
     })
     .where(eq(payments.paymentId, id))
     .returning();
   return payment;
 };
 
-// M-Pesa specific operations
 export const processMpesaPayment = async (paymentData: {
   orderId: number;
   userId: number;
@@ -58,13 +54,12 @@ export const processMpesaPayment = async (paymentData: {
     orderId: paymentData.orderId.toString()
   });
 
-  // Create payment record with proper typing
+  // Create payment record
   const paymentValues: NewPayment = {
     orderId: paymentData.orderId,
     userId: paymentData.userId,
     method: "mpesa",
-    amount: paymentData.amount.toString(), // Convert to string to match decimal type
-    transactionCode: "", // Will be updated when payment completes
+    amount: paymentData.amount.toString(),
     status: "pending",
     phoneNumber: paymentData.phoneNumber,
     merchantRequestId: mpesaResponse.MerchantRequestID,
@@ -80,7 +75,6 @@ export const processMpesaPayment = async (paymentData: {
   return payment;
 };
 
-// Query operations
 export const getPaymentsByOrder = async (orderId: number): Promise<Payment[]> => {
   return await db.select()
     .from(payments)
@@ -95,7 +89,6 @@ export const getPaymentsByUser = async (userId: number): Promise<Payment[]> => {
     .orderBy(payments.createdAt);
 };
 
-// Webhook handler
 export const handleMpesaCallback = async (callbackData: {
   MerchantRequestID: string;
   CheckoutRequestID: string;
@@ -115,32 +108,10 @@ export const handleMpesaCallback = async (callbackData: {
   const status = callbackData.ResultCode === 0 ? "completed" : "failed";
   const updateData: Partial<NewPayment> = {
     status,
-    transactionCode: callbackData.MpesaReceiptNumber || "",
-    paidAt: status === "completed" ? new Date() : null
+    transactionCode: callbackData.MpesaReceiptNumber || null,
+    paidAt: status === "completed" ? new Date() : null,
+    updatedAt: new Date()
   };
 
   return await updatePayment(payment.paymentId, updateData);
-};
-
-// Additional utility functions
-export const getPendingPayments = async (): Promise<Payment[]> => {
-  return await db.select()
-    .from(payments)
-    .where(eq(payments.status, "pending"))
-    .orderBy(payments.createdAt);
-};
-
-export const verifyPaymentStatus = async (paymentId: number): Promise<Payment> => {
-  const payment = await getPaymentById(paymentId);
-  if (!payment) {
-    throw new Error("Payment not found");
-  }
-
-  if (payment.method === "mpesa" && payment.status === "pending" && payment.checkoutRequestId) {
-    // Additional verification logic for M-Pesa payments
-    // This would call Safaricom's API to verify the payment status
-    // and update the payment record accordingly
-  }
-
-  return payment;
 };
