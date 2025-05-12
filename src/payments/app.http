@@ -22,7 +22,7 @@ Authorization: Bearer
 {
   "orderId": 1,
   "userId": 1,
-  "amount": 100,
+  "amount": 1000,
   "phoneNumber": "254722227154",
   "method": "mpesa"
 }
@@ -44,7 +44,7 @@ GET http://localhost:8000/api/payments/1
 Authorization: Bearer 
 
 ### Update payment status
-PATCH http://localhost:8000/api/payments/1
+PATCH http://localhost:8000/api/payments/48
 Content-Type: application/json
 Authorization: Bearer 
 
