@@ -27,7 +27,7 @@ Content-Type: application/json
 }
 
 ### Update product on render
-https://tech-giant-api.onrender.com/api/products/3
+POST https://tech-giant-api.onrender.com/api/products/3
 Content-Type: application/json
 
 {

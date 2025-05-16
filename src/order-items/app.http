@@ -13,7 +13,7 @@ Authorization: Bearer token
 
 {
   "orderId": 2,
-  "productId": 2,
+  "productId": 5,
   "quantity": 2,
   "priceAtPurchase": 49.99,
   "discountApplied": 5.00
@@ -38,3 +38,4 @@ DELETE http://localhost:8000/api/order-items/4
 Authorization: Bearer token
 
 ### Get all order items
+GET http://localhost:8000/api/order-items
