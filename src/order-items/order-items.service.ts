@@ -2,6 +2,12 @@ import { eq, and } from "drizzle-orm";
 import db from "../drizzle/db";
 import { orderItems, OrderItem, NewOrderItem } from "../drizzle/schema";
 
+//Get all order items
+export const getAllOrderItems = async (): Promise<OrderItem[]> => {
+  return await db.select()
+    .from(orderItems);
+};
+
 export const getOrderItemsByOrder = async (orderId: number): Promise<OrderItem[]> => {
   return await db.select()
     .from(orderItems)

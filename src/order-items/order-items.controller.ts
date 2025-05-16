@@ -5,9 +5,21 @@ import {
   createOrderItem,
   updateOrderItem,
   deleteOrderItem,
-  getOrderItemsByProduct
+  getOrderItemsByProduct,
+  getAllOrderItems
 } from "./order-items.service";
 import { orderItemSchema, orderItemUpdateSchema } from "./order-items.validator";
+
+
+//Get all order items
+export const listAllOrderItems = async (c: Context) => {
+  try {
+    const items = await getAllOrderItems();
+    return c.json(items, 200);
+  } catch (error) {
+    return c.json({ error: "Failed to fetch order items" }, 500);
+  }
+};
 
 export const listOrderItems = async (c: Context) => {
   const orderId = parseInt(c.req.param('orderId'));

@@ -6,11 +6,15 @@ import {
   createNewOrderItem,
   updateExistingItem,
   deleteItem,
+  listAllOrderItems,
   listItemsByProduct
 } from "./order-items.controller";
 import { orderItemSchema, orderItemUpdateSchema } from "./order-items.validator";
 
 export const orderItemRouter = new Hono();
+
+//Get all order items
+orderItemRouter.get("/", listAllOrderItems);
 
 // Order-based routes
 orderItemRouter.get("/order/:orderId{[0-9]+}", listOrderItems);
