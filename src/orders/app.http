@@ -1,41 +1,122 @@
-### Get all orders
+### Health Check
+GET http://localhost:8000/
+
+### 1. Get all orders (Admin)
 GET http://localhost:8000/api/orders
-Authorization: Bearer token
-
-### Get user's orders
-GET http://localhost:8000/api/orders/user/1
-Authorization: Bearer token
-
-### Get orders by status
-GET http://localhost:8000/api/orders/status/pending
-Authorization: Bearer token
-
-### Create new order
-POST http://localhost:8000/api/orders
+Authorization: Bearer aiuth
 Content-Type: application/json
-Authorization: Bearer token
+
+### 2. Get user's orders
+GET http://localhost:8000/api/orders/user/1
+Authorization: Bearer aiuth
+Content-Type: application/json
+
+### 3. Get orders by status
+GET http://localhost:8000/api/orders/status/pending
+Authorization: Bearer aiuth
+Content-Type: application/json
+
+### 4. Create new order (with items)
+POST http://localhost:8000/api/orders
+Authorization: Bearer aiuth
+Content-Type: application/json
 
 {
-  "userId": 1,
-  "totalAmount": 99.99,
+  "userId": 16,
+  "totalAmount": 199.98,
   "shippingAddress": "123 Main St, Nairobi",
-  "contactPhone": "+254712345678"
+  "contactPhone": "+254712345678",
+  "items": [
+    {
+      "productId": 8,
+      "quantity": 2,
+      "priceAtPurchase": 99.99,
+      "discountApplied": 0
+    }
+  ]
 }
 
-### Get order by ID
+### 5. Get order by ID
 GET http://localhost:8000/api/orders/1
-Authorization: Bearer token
-
-### Update order status
-PATCH http://localhost:8000/api/orders/1
+Authorization: Bearer -aiuth
 Content-Type: application/json
-Authorization: Bearer token
+
+### 6. Update order status
+PATCH http://localhost:8000/api/orders/1
+Authorization: Bearer aiuth
+Content-Type: application/json
 
 {
   "status": "shipped",
   "trackingNumber": "TRK123456"
 }
 
-### Cancel order
+### 7. Cancel order (restores product quantities)
 DELETE http://localhost:8000/api/orders/1/cancel
-Authorization: Bearer token
+Authorization: Bearer aiuth
+Content-Type: application/json
+
+### 8. Try to create order with insufficient stock
+POST http://localhost:8000/api/orders
+Authorization: Bearer aiuth
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "totalAmount": 999.99,
+  "shippingAddress": "123 Main St, Nairobi",
+  "contactPhone": "+254712345678",
+  "items": [
+    {
+      "productId": 10,
+      "quantity": 1,
+      "priceAtPurchase": 99.99,
+      "discountApplied": 0
+    }
+  ]
+}
+
+### 9. Create complex order with multiple items
+POST http://localhost:8000/api/orders
+Authorization: Bearer aiuth
+Content-Type: application/json
+
+{
+  "userId": 16,
+  "totalAmount": 349.97,
+  "shippingAddress": "456 Market St, Nairobi",
+  "contactPhone": "+254798765432",
+  "items": [
+    {
+      "productId": 10,
+      "quantity": 1,
+      "priceAtPurchase": 99.99,
+      "discountApplied": 0
+    },
+    {
+      "productId": 11,
+      "quantity": 2,
+      "priceAtPurchase": 124.99,
+      "discountApplied": 10.00
+    }
+  ]
+}
+
+### 10. Get cancelled orders
+GET http://localhost:8000/api/orders/status/cancelled
+Authorization: Bearer aiuth
+Content-Type: application/json
+
+### 11. Update order payment status
+PATCH http://localhost:8000/api/orders/2
+Authorization: Bearer aiuth
+Content-Type: application/json
+
+{
+  "paymentStatus": "paid"
+}
+
+### 12. Try to cancel already cancelled order
+DELETE http://localhost:8000/api/orders/1/cancel
+Authorization: Bearer aiuth
+Content-Type: application/json

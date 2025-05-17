@@ -12,7 +12,13 @@ export const orderSchema = z.object({
   paymentStatus: paymentStatusSchema.optional().default("unpaid"),
   shippingAddress: z.string().min(10, "Address too short"),
   contactPhone: z.string().min(10, "Invalid phone number"),
-  trackingNumber: z.string().optional()
+  trackingNumber: z.string().optional(),
+  items: z.array(z.object({
+    productId: z.number().int().positive("Product ID must be positive"),
+    quantity: z.number().int().positive("Quantity must be at least 1"),
+    priceAtPurchase: z.number().positive("Price must be positive"),
+    discountApplied: z.number().min(0).default(0)
+  })).min(1, "Order must have at least one item")
 });
 
 export const orderUpdateSchema = z.object({

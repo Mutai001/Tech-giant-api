@@ -13,7 +13,7 @@ import { orderSchema, orderUpdateSchema } from "./orders.validator";
 
 export const orderRouter = new Hono();
 
-// List all orders
+// List all orders (admin only)
 orderRouter.get("/", listOrders);
 
 // User-specific routes
@@ -39,4 +39,4 @@ orderRouter.patch(
 
 orderRouter.delete("/:id{[0-9]+}/cancel", cancelUserOrder);
 
-// export default orderRouter;
+export default orderRouter;
