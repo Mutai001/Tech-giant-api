@@ -1,7 +1,7 @@
 import { eq, and } from "drizzle-orm";
 import db from "../drizzle/db";
 import { productMedia, ProductMedia, NewProductMedia } from "../drizzle/schema";
-import { adminRoleAuth } from "../middleware/bearAuth";
+// import { adminRoleAuth } from "../middleware/bearAuth";
 
 export const getProductMediaService = async (productId: number) => {
   return await db.query.productMedia.findMany({
